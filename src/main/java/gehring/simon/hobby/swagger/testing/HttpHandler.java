@@ -8,7 +8,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import gehring.simon.hobby.swagger.model.v3_0.Server;
+import gehring.simon.hobby.swagger.model.v3.Server;
 import gehring.simon.hobby.swagger.testing.http.Method;
 
 public class HttpHandler {

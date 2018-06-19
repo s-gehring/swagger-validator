@@ -1,3 +1,7 @@
+/*
+ *
+ */
+
 package gehring.simon.hobby.swagger;
 
 import java.io.File;
@@ -14,36 +18,67 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import gehring.simon.hobby.swagger.model.v3_0.OpenApi;
+import gehring.simon.hobby.swagger.model.v3.OpenApi;
 import gehring.simon.hobby.swagger.testing.SchemeTestResult;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class YamlReader.
+ */
 public class YamlReader {
 
-    public static void main(final String[] args)
-            throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
-        System.out.println(SwaggerObjectFactory.createExample(OpenApi.class));
-        // System.exit(0);
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 * @throws JsonParseException
+	 *             the json parse exception
+	 * @throws JsonMappingException
+	 *             the json mapping exception
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public static void main(final String[] args)
+			throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
+		// System.out.println(SwaggerObjectFactory.createExample(OpenApi.class));
+		// System.exit(0);
 
-        File yamlFile = new File("C:\\Users\\Simon\\Desktop\\someYaml.yaml");
+		final File yamlFile = new File("C:\\Users\\Simon\\Desktop\\someYaml.yaml");
 
-        InputStream is = new FileInputStream(yamlFile);
+		final InputStream is = new FileInputStream(yamlFile);
 
-        YamlReader yaml = new YamlReader(is);
+		final YamlReader yaml = new YamlReader(is);
 
-        is.close();
-        SchemeTestResult sv = new SchemeTestResult(yaml.parsedYaml);
-        sv.executeTestsOnAllServers();
+		is.close();
+		final SchemeTestResult sv = new SchemeTestResult(yaml.parsedYaml);
+		sv.executeTestsOnAllServers();
 
-    }
+	}
 
-    private OpenApi parsedYaml;
+	/** The parsed yaml. */
+	private final OpenApi parsedYaml;
 
-    public YamlReader(final InputStream is) throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        parsedYaml = mapper.readValue(is, OpenApi.class);
-        System.out.println(parsedYaml);
-        is.close();
-    }
+	/**
+	 * Instantiates a new yaml reader.
+	 *
+	 * @param is
+	 *            the is
+	 * @throws JsonParseException
+	 *             the json parse exception
+	 * @throws JsonMappingException
+	 *             the json mapping exception
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public YamlReader(final InputStream is) throws JsonParseException, JsonMappingException, IOException {
+		final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		parsedYaml = mapper.readValue(is, OpenApi.class);
+		System.out.println(parsedYaml);
+		is.close();
+	}
 }
