@@ -1,5 +1,29 @@
+/*
+ *
+ */
+
 package gehring.simon.hobby.swagger.testing.http;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum Method.
+ */
 public enum Method {
-    GET, POST, DELETE, OPTIONS, HEAD, PATCH, TRACE, PUT
+
+  /** The get. */
+  GET,
+  /** The post. */
+  POST,
+  /** The delete. */
+  DELETE,
+  /** The options. */
+  OPTIONS,
+  /** The head. */
+  HEAD,
+  /** The patch. */
+  PATCH,
+  /** The trace. */
+  TRACE,
+  /** The put. */
+  PUT
 }
