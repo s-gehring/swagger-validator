@@ -13,133 +13,218 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gehring.simon.hobby.swagger.model.v3.Example;
 import gehring.simon.hobby.swagger.model.v3.Parameter;
 import gehring.simon.hobby.swagger.model.v3.Schema;
+import gehring.simon.hobby.swagger.testing.generator.NumberGenerator;
+import gehring.simon.hobby.swagger.testing.generator.RandomNumberGenerator;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating Example objects.
  */
 public class ExampleFactory {
 
 	private static final Logger LOGGER = Logger.getLogger(ExampleFactory.class.toString());
-	private Random random;
+	private NumberGenerator generator;
 
 	private String buildCustomExampleStringBySchema(Schema schema) {
 		// TODO: implement this
 		return null;
 	}
 
-	private String buildCustomExampleNumberBySchema(Schema schema) {
-		// TODO: implement this
-		return "0";
+	/*
+	 * Given schema.getMaximum(), .getMinimum() (and .getExclusiveMaximum() and
+	 * -Minimum()), and schema.multipleOf(), this function decides what the real
+	 * minimum factor is (i. e. the first integer(!) X for which .multipleOf() * X >
+	 * getMinimum() (or >= for inclusive minimums)).
+	 */
+	private long getMinFactor(Schema schema, double min, double max) {
+		Double minFactorFraction = min / schema.getMultipleOf();
+		minFactorFraction = Math.ceil(minFactorFraction);
+		return minFactorFraction.longValue();
 	}
 
-	private Long nextLong(Long range) {
-		if (range <= 0)
-			throw new IllegalArgumentException("Range must be positive");
-
-		Integer firstDigits = random.nextInt();
-		Integer lastDigits = random.nextInt();
-
-		String bitString = Integer.toBinaryString(firstDigits) + Integer.toBinaryString(lastDigits);
-
-		Long result = Long.parseLong(bitString.substring(1), 2);
-		if (firstDigits < 0)
-			result = -result;
-
-		return result % range;
+	private long getMaxFactor(Schema schema, double min, double max) {
+		Double maxFactorFraction = max / schema.getMultipleOf();
+		maxFactorFraction = Math.floor(maxFactorFraction);
+		return maxFactorFraction.longValue();
 	}
 
-	private String buildCustomExampleIntegerBySchema(Schema schema) {
-		Long minimum;
-		if (schema.getMinimum() == null) {
-			if (schema.getFormat() != null) {
-				switch (schema.getFormat()) {
-				case "int32":
-					minimum = new Long(Integer.MIN_VALUE);
-					break;
-				case "int64":
-					minimum = Long.MIN_VALUE;
-					break;
-
-				default:
-					throw new MalformedSwaggerYamlException(
-							"Got format '" + schema.getFormat() + "' for type integer. Don't know how to handle this.");
-				}
+	private Float buildCustomExampleFloatBySchema(Schema schema) {
+		if (schema.getMultipleOf() != null) {
+			float min = Float.MIN_VALUE, max = Float.MAX_VALUE;
+			if (schema.getMinimum() != null)
+				min = schema.getMinimum().floatValue();
+			if (schema.getMaximum() != null)
+				max = schema.getMaximum().floatValue();
+			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false)
+				max += Math.ulp(max);
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true)
+				min += Math.ulp(min);
+			long resultFactor;
+			long minFactor = getMinFactor(schema, min, max);
+			long maxFactor = getMaxFactor(schema, min, max);
+			if (minFactor == maxFactor) {
+				LOGGER.warning(
+						"The combination of min=" + min + ", max=" + max + ", multipleOf=" + schema.getMultipleOf()
+								+ " leaves only one possible answer=" + (minFactor * schema.getMultipleOf()) + ".");
+				resultFactor = minFactor;
 			} else {
-				LOGGER.warning("Have to guess a minimum limit for schema '" + schema.toString()
-						+ "'. I'd rather have a valid minimum or at least a proper format.");
-				minimum = new Long(Integer.MIN_VALUE);
+				resultFactor = generator.nextLong(minFactor, maxFactor + 1);
 			}
-		} else {
-			minimum = schema.getMinimum();
-		}
+			Double doubleResult = schema.getMultipleOf() * resultFactor;
+			return doubleResult.floatValue();
 
-		Long maximum;
-		if (schema.getMaximum() == null) {
-			if (schema.getFormat() != null) {
-				switch (schema.getFormat()) {
-				case "int32":
-					maximum = new Long(Integer.MAX_VALUE);
-					break;
-				case "int64":
-					maximum = Long.MAX_VALUE;
-					break;
-				default:
-					throw new MalformedSwaggerYamlException(
-							"Got format '" + schema.getFormat() + "' for type integer. Don't know how to handle this.");
-				}
+		}
+		Float min = schema.getMinimum() == null ? Float.MIN_VALUE : schema.getMinimum().floatValue();
+		Float max = schema.getMaximum() == null ? Float.MAX_VALUE : schema.getMaximum().floatValue();
+
+		return generator.nextFloat(min, max);
+	}
+
+	private Double buildCustomExampleDoubleBySchema(Schema schema) {
+		if (schema.getMultipleOf() != null) {
+			double min = Double.MIN_VALUE, max = Double.MAX_VALUE;
+			if (schema.getMinimum() != null)
+				min = schema.getMinimum();
+			if (schema.getMaximum() != null)
+				max = schema.getMaximum();
+			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false)
+				max += Math.ulp(max);
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true)
+				min += Math.ulp(min);
+
+			long resultFactor;
+			long minFactor = getMinFactor(schema, min, max);
+			long maxFactor = getMaxFactor(schema, min, max);
+			if (minFactor == maxFactor) {
+				LOGGER.warning(
+						"The combination of min=" + min + ", max=" + max + ", multipleOf=" + schema.getMultipleOf()
+								+ " leaves only one possible answer=" + (minFactor * schema.getMultipleOf()) + ".");
+				resultFactor = minFactor;
 			} else {
-				LOGGER.warning("Have to guess a maximum limit for schema '" + schema.toString()
-						+ "'. I'd rather have a valid maximum or at least a proper format.");
-				maximum = new Long(Integer.MAX_VALUE);
+				resultFactor = generator.nextLong(minFactor, maxFactor + 1);
 			}
+			return schema.getMultipleOf() * resultFactor;
 
-		} else {
-			maximum = schema.getMaximum();
 		}
+		Double min = schema.getMinimum() == null ? Double.MIN_VALUE : schema.getMinimum();
+		Double max = schema.getMaximum() == null ? Double.MAX_VALUE : schema.getMaximum();
 
-		if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true) {
-			minimum++;
-		}
-		if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false) {
-			maximum++;
-		}
-
-		// TODO: multipleOf
-		long range = maximum - minimum;
-		return "" + (nextLong(range) + minimum);
+		return generator.nextDouble(min, max);
 	}
 
-	private String buildCustomExampleNullBySchema(Schema schema) {
-		return "null";
+	private Long buildCustomExampleLongBySchema(Schema schema) {
+		long min = Long.MIN_VALUE, max = Long.MAX_VALUE;
+		if (schema.getMaximum() != null) {
+			Double maxFractional = Math.floor(schema.getMaximum());
+			max = maxFractional.longValue();
+			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false) {
+				max++;
+			}
+		}
+		if (schema.getMinimum() != null) {
+			Double minFractional = Math.ceil(schema.getMinimum());
+			min = minFractional.intValue();
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true) {
+				min++;
+			}
+		}
+		if (max <= min) {
+			throw new MalformedSwaggerYamlException(
+					"'" + schema.getType() + "' maximum (" + max + ") is lower than its minimum (" + min + ").");
+		}
+
+		return generator.nextLong(min, max);
 	}
 
-	private String buildCustomExampleBooleanBySchema(Schema schema) {
-		return "true";
+	private Integer buildCustomExampleIntegerBySchema(Schema schema) {
+		int min = Integer.MIN_VALUE, max = Integer.MAX_VALUE;
+		if (schema.getMaximum() != null) {
+			Double maxFractional = Math.floor(schema.getMaximum());
+			max = maxFractional.intValue();
+			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false) {
+				max++;
+			}
+		}
+		if (schema.getMinimum() != null) {
+			Double minFractional = Math.ceil(schema.getMinimum());
+			min = minFractional.intValue();
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true) {
+				min++;
+			}
+		}
+		if (max <= min) {
+			throw new MalformedSwaggerYamlException(
+					"'" + schema.getType() + "' maximum (" + max + ") is lower than its minimum (" + min + ").");
+		}
+
+		return generator.nextInt(min, max);
+	}
+
+	private Boolean buildCustomExampleBooleanBySchema(Schema schema) {
+		// I don't think there are any limitations of booleans.
+		// TODO: Review.
+		return generator.nextBoolean();
 	}
 
 	public String buildCustomExampleBySchema(Schema schema) {
+		return buildCustomExampleObjectBySchema(schema).toString();
+	}
+
+	private Object buildCustomExampleObjectBySchema(Schema schema) {
 		// object, array, string, number, boolean, or null
 		switch (schema.getType()) {
 		case "string":
 			return buildCustomExampleStringBySchema(schema);
-		case "number":
-			return buildCustomExampleNumberBySchema(schema);
 		case "boolean":
 			return buildCustomExampleBooleanBySchema(schema);
 		case "null":
-			// lol
-			return buildCustomExampleNullBySchema(schema);
+			return "null";
 		case "object":
 			throw new UnsupportedOperationException("Not implemented yet");
 		case "array":
 			throw new UnsupportedOperationException("Not implemented yet");
+		case "number":
+			if (schema.getFormat() == null) {
+				LOGGER.warning("Found type '" + schema.getType()
+						+ "', without a format attribute. Assuming 'double'. If possible, you should try to define a proper format.");
+				return buildCustomExampleDoubleBySchema(schema);
+			}
+			switch (schema.getFormat()) {
+			case "int32":
+			case "integer":
+			case "int":
+				return buildCustomExampleIntegerBySchema(schema);
+			case "int64":
+			case "long":
+				return buildCustomExampleLongBySchema(schema);
+			default:
+				LOGGER.warning("Found type '" + schema.getType() + "', but don't understand format '"
+						+ schema.getFormat() + "'. Assuming 'double'.");
+			case "double":
+				return buildCustomExampleDoubleBySchema(schema);
+			case "float":
+				return buildCustomExampleFloatBySchema(schema);
+			}
 		case "integer":
-			LOGGER.warning(
-					"Using type 'integer', which is not specified in JSON but fine by OpenAPI 3.0. Use type=number in combination with the format argument instead.");
+			LOGGER.warning("Using type 'integer', which is not specified in JSON but fine by OpenAPI 3.0.");
 			LOGGER.warning(
 					"Compare 'https://swagger.io/specification/#dataTypeFormat' to 'http://json-schema.org/' (and in extension 'http://json-schema.org/latest/json-schema-core.html#rfc.section.4.2.1').");
-			return buildCustomExampleIntegerBySchema(schema);
+			String format = schema.getFormat();
+			if (format == null) {
+				format = "int32";
+			}
+			switch (format) {
+			case "int32":
+			case "integer":
+			case "int":
+				return buildCustomExampleIntegerBySchema(schema);
+			case "int64":
+			case "long":
+				return buildCustomExampleLongBySchema(schema);
+			default:
+				throw new MalformedSwaggerYamlException("Got format '" + schema.getFormat() + "' for type '"
+						+ schema.getType() + "'. Don't know how to handle this.");
+			}
+
 		}
 		throw new MalformedSwaggerYamlException("Don't recognize type '" + schema.getType() + "' in a given schema.");
 	}
@@ -204,15 +289,15 @@ public class ExampleFactory {
 		Random seedGenerator = new Random();
 		long seed = seedGenerator.nextLong();
 		LOGGER.info("No seed specified. Using randomly chosen '" + seed + "'.");
-		random = new Random(seed);
+		generator = new RandomNumberGenerator(seed);
 	}
 
-	public ExampleFactory(Random r) {
-		random = r;
+	public ExampleFactory(NumberGenerator r) {
+		generator = r;
 	}
 
 	public ExampleFactory(Long seed) {
-		random = new Random(seed);
+		generator = new RandomNumberGenerator(seed);
 	}
 
 }
