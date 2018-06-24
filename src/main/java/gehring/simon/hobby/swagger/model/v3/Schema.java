@@ -27,16 +27,16 @@ public class Schema extends SwaggerObject {
 	private String description;
 
 	@JsonProperty
-	private Integer multipleOf;
+	private Double multipleOf;
 
 	@JsonProperty
-	private Long maximum;
+	private Double maximum;
 
 	@JsonProperty
 	private Boolean exclusiveMaximum;
 
 	@JsonProperty
-	private Long minimum;
+	private Double minimum;
 
 	@JsonProperty
 	private Boolean exclusiveMinimum;
@@ -431,7 +431,7 @@ public class Schema extends SwaggerObject {
 	 *
 	 * @return the maximum
 	 */
-	public Long getMaximum() {
+	public Double getMaximum() {
 		return maximum;
 	}
 
@@ -516,7 +516,7 @@ public class Schema extends SwaggerObject {
 	 *
 	 * @return the minimum
 	 */
-	public Long getMinimum() {
+	public Double getMinimum() {
 		return minimum;
 	}
 
@@ -609,7 +609,7 @@ public class Schema extends SwaggerObject {
 	 *
 	 * @return the multiple of
 	 */
-	public Integer getMultipleOf() {
+	public Double getMultipleOf() {
 		return multipleOf;
 	}
 
