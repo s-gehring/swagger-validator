@@ -90,10 +90,10 @@ public class Schema extends SwaggerObject {
 	private Map<String, Schema> items;
 
 	@JsonProperty
-	private Schema properties;
+	private Map<String, Schema> properties;
 
 	@JsonProperty
-	private Object additionalProperties; // Actually boolean or schema
+	private SchemaOrBoolean additionalProperties;
 
 	@JsonProperty
 	private String format;
@@ -234,7 +234,7 @@ public class Schema extends SwaggerObject {
 	 *
 	 * @return the additional properties
 	 */
-	public Object getAdditionalProperties() {
+	public SchemaOrBoolean getAdditionalProperties() {
 		return additionalProperties;
 	}
 
@@ -375,10 +375,6 @@ public class Schema extends SwaggerObject {
 
 	/**
 	 *
-	 * <p>
-	 * The value of "additionalItems" MUST be either a boolean or an object. If it
-	 * is an object, this object MUST be a valid JSON Schema.
-	 * </p>
 	 * <p>
 	 * The value of "items" MUST be either a schema or array of schemas.
 	 * </p>
@@ -706,7 +702,7 @@ public class Schema extends SwaggerObject {
 	 *
 	 * @return the properties
 	 */
-	public Schema getProperties() {
+	public Map<String, Schema> getProperties() {
 		return properties;
 	}
 
