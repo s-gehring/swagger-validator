@@ -4,6 +4,7 @@
 
 package gehring.simon.hobby.swagger.testing;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gehring.simon.hobby.swagger.model.v3.Example;
 import gehring.simon.hobby.swagger.model.v3.Parameter;
 import gehring.simon.hobby.swagger.model.v3.Schema;
+import gehring.simon.hobby.swagger.model.v3.SchemaOrBoolean;
 import gehring.simon.hobby.swagger.testing.generator.NumberGenerator;
 import gehring.simon.hobby.swagger.testing.generator.RandomNumberGenerator;
 
@@ -165,11 +167,59 @@ public class ExampleFactory {
 		return generator.nextBoolean();
 	}
 
-	public String buildCustomExampleBySchema(Schema schema) {
-		return buildCustomExampleObjectBySchema(schema).toString();
+	public String buildCustomStringifiedExampleBySchema(Schema schema) {
+		return buildCustomExampleBySchema(schema).toString();
 	}
 
-	private Object buildCustomExampleObjectBySchema(Schema schema) {
+	private JsonObject buildCustomExampleObjectBySchema(Schema schema) {
+		JsonObject result = new JsonObject();
+
+		int min = schema.getMinProperties() != null ? schema.getMinProperties() : 0;
+
+		Map<String, Schema> properties = schema.getProperties();
+		// First, fill required properties.
+		if (schema.getRequired() != null) {
+			for (String reqPropertyKey : schema.getRequired()) {
+				Schema reqPropertySchema = properties.get(reqPropertyKey);
+				if (reqPropertySchema == null) {
+					throw new MalformedSwaggerYamlException(
+							"Property '" + reqPropertyKey + "' required, but not provided in schema.");
+				}
+				try {
+					result.put(reqPropertyKey, buildCustomExampleBySchema(reqPropertySchema));
+				} catch (MalformedSwaggerYamlException e) {
+					throw new MalformedSwaggerYamlException("Error in property '" + reqPropertyKey + "'.", e);
+				}
+			}
+			if (min > 0 && min < schema.getRequired().size()) {
+				LOGGER.warning("Minimum number of properties (" + min
+						+ ") is redundant, because the 'required'-array already contains " + schema.getRequired().size()
+						+ " attributes.");
+			}
+		}
+
+		// Todo: Some more properties. Not additional ones and not required ones. Just
+		// defined ones.
+
+		SchemaOrBoolean additionalProperties = schema.getAdditionalProperties();
+		if (additionalProperties != null) {
+			if (additionalProperties.getType() == SchemaOrBoolean.Type.Boolean) {
+				Boolean areAdditionalPropertiesAllowed = additionalProperties.getBoolean();
+				if (areAdditionalPropertiesAllowed) {
+					// Nice, we can fill the remaining needed properties.
+				} else {
+					// Fuck. At this point this doesn't make a difference, but once we have less
+					// than min properties, we need to inform the user of his error.
+				}
+			} else {
+				// additionalProperties.getType() == SchemaOrBoolean.Type.Schema
+			}
+		}
+
+		return result;
+	}
+
+	private Object buildCustomExampleBySchema(Schema schema) {
 		// object, array, string, number, boolean, or null
 		switch (schema.getType()) {
 		case "string":
@@ -179,7 +229,8 @@ public class ExampleFactory {
 		case "null":
 			return "null";
 		case "object":
-			throw new UnsupportedOperationException("Not implemented yet");
+			return buildCustomExampleObjectBySchema(schema);
+
 		case "array":
 			throw new UnsupportedOperationException("Not implemented yet");
 		case "number":
@@ -242,7 +293,7 @@ public class ExampleFactory {
 					+ para.getDescription() + "' has a schema and a content definition. Cannot have both.");
 
 		if (para.getSchema() != null) {
-			return buildCustomExampleBySchema(para.getSchema());
+			return buildCustomStringifiedExampleBySchema(para.getSchema());
 		} else {
 			// para.getContent != null
 		}
@@ -259,7 +310,7 @@ public class ExampleFactory {
 	// TODO: Evtl. mehrere examples benutzen?
 	public String getExampleObject(final Parameter parameter) {
 		if (parameter.getExample() == null) {
-			if (parameter.getExample() == null || parameter.getExamples().isEmpty()) {
+			if (parameter.getExamples() == null || parameter.getExamples().isEmpty()) {
 				return buildCustomExample(parameter);
 			}
 			return buildExampleFromExample(parameter.getExamples().values().iterator().next());
@@ -297,7 +348,7 @@ public class ExampleFactory {
 	}
 
 	public ExampleFactory(Long seed) {
-		generator = new RandomNumberGenerator(seed);
+		this(new RandomNumberGenerator(seed));
 	}
 
 }
