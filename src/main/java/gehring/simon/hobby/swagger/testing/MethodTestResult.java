@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import gehring.simon.hobby.swagger.model.v3.Operation;
 import gehring.simon.hobby.swagger.model.v3.Parameter;
 import gehring.simon.hobby.swagger.model.v3.Server;
+import gehring.simon.hobby.swagger.testing.factories.ExampleFactory;
 import gehring.simon.hobby.swagger.testing.http.HttpHandler;
 import gehring.simon.hobby.swagger.testing.http.Method;
 import gehring.simon.hobby.swagger.testing.results.AbstractTestResult;

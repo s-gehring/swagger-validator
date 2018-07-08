@@ -1,4 +1,4 @@
-package gehring.simon.hobby.swagger.testing;
+package gehring.simon.hobby.swagger.testing.factories;
 
 import java.util.HashMap;
 
