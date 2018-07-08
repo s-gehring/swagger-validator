@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
 import gehring.simon.hobby.swagger.model.v3.SchemaOrBoolean;
-import gehring.simon.hobby.swagger.testing.GlobalSettings;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
 public class ObjectFactory {
@@ -32,7 +31,8 @@ public class ObjectFactory {
 							"Property '" + reqPropertyKey + "' required, but not provided in schema.");
 				}
 				try {
-					result.put(reqPropertyKey, buildCustomExampleBySchema(reqPropertySchema));
+					result.put(reqPropertyKey,
+							settings.getExampleFactory().buildCustomExampleBySchema(reqPropertySchema));
 				} catch (MalformedSwaggerYamlException e) {
 					throw new MalformedSwaggerYamlException("Error in property '" + reqPropertyKey + "'.", e);
 				}

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gehring.simon.hobby.swagger.model.v3.Example;
 import gehring.simon.hobby.swagger.model.v3.Parameter;
 import gehring.simon.hobby.swagger.model.v3.Schema;
-import gehring.simon.hobby.swagger.testing.GlobalSettings;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
 /**
@@ -24,27 +23,21 @@ public class ExampleFactory {
 
 	private GlobalSettings settings;
 
-	private Boolean buildCustomExampleBooleanBySchema(Schema schema) {
-		// I don't think there are any limitations of booleans.
-		// TODO: Review.
-		return settings.nextBoolean();
-	}
-
 	public String buildCustomStringifiedExampleBySchema(Schema schema) {
 		return buildCustomExampleBySchema(schema).toString();
 	}
 
-	private Object buildCustomExampleBySchema(Schema schema) {
+	protected Object buildCustomExampleBySchema(Schema schema) {
 		// object, array, string, number, boolean, or null
 		switch (schema.getType()) {
 		case "string":
-			return buildCustomExampleStringBySchema(schema);
+			return settings.getStringFactory().buildCustomExampleStringBySchema(schema);
 		case "boolean":
-			return buildCustomExampleBooleanBySchema(schema);
+			return settings.getBooleanFactory().buildCustomExampleBooleanBySchema(schema);
 		case "null":
 			return null;
 		case "object":
-			return buildCustomExampleObjectBySchema(schema);
+			return settings.getObjectFactory().buildCustomExampleObjectBySchema(schema);
 
 		case "array":
 			throw new UnsupportedOperationException("Not implemented yet");
@@ -52,23 +45,23 @@ public class ExampleFactory {
 			if (schema.getFormat() == null) {
 				LOGGER.warning("Found type '" + schema.getType()
 						+ "', without a format attribute. Assuming 'double'. If possible, you should try to define a proper format.");
-				return buildCustomExampleDoubleBySchema(schema);
+				return settings.getFloatFactory().buildCustomExampleDoubleBySchema(schema);
 			}
 			switch (schema.getFormat()) {
 			case "int32":
 			case "integer":
 			case "int":
-				return buildCustomExampleIntegerBySchema(schema);
+				return settings.getIntegerFactory().buildCustomExampleIntegerBySchema(schema);
 			case "int64":
 			case "long":
-				return buildCustomExampleLongBySchema(schema);
+				return settings.getIntegerFactory().buildCustomExampleLongBySchema(schema);
 			default:
 				LOGGER.warning("Found type '" + schema.getType() + "', but don't understand format '"
 						+ schema.getFormat() + "'. Assuming 'double'.");
 			case "double":
-				return buildCustomExampleDoubleBySchema(schema);
+				return settings.getFloatFactory().buildCustomExampleDoubleBySchema(schema);
 			case "float":
-				return buildCustomExampleFloatBySchema(schema);
+				return settings.getFloatFactory().buildCustomExampleFloatBySchema(schema);
 			}
 		case "integer":
 			LOGGER.warning("Using type 'integer', which is not specified in JSON but fine by OpenAPI 3.0.");
@@ -82,10 +75,10 @@ public class ExampleFactory {
 			case "int32":
 			case "integer":
 			case "int":
-				return buildCustomExampleIntegerBySchema(schema);
+				return settings.getIntegerFactory().buildCustomExampleIntegerBySchema(schema);
 			case "int64":
 			case "long":
-				return buildCustomExampleLongBySchema(schema);
+				return settings.getIntegerFactory().buildCustomExampleLongBySchema(schema);
 			default:
 				throw new MalformedSwaggerYamlException("Got format '" + schema.getFormat() + "' for type '"
 						+ schema.getType() + "'. Don't know how to handle this.");

@@ -1,7 +1,6 @@
 package gehring.simon.hobby.swagger.testing.factories;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
-import gehring.simon.hobby.swagger.testing.GlobalSettings;
 
 public class StringFactory {
 
@@ -14,7 +13,7 @@ public class StringFactory {
 	protected String buildCustomExampleStringBySchema(Schema schema) {
 		int maxLength = schema.getMaxLength() != null ? schema.getMaxLength() : settings.getStringMaxLength();
 		int minLength = schema.getMinItems() != null ? schema.getMinLength() : settings.getStringMinLength();
-		return settings.nextString(minLength, maxLength);
+		return settings.getStringGenerator().nextString(minLength, maxLength);
 	}
 
 }

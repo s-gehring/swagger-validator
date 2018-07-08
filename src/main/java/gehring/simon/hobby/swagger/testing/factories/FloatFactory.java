@@ -3,9 +3,8 @@ package gehring.simon.hobby.swagger.testing.factories;
 import java.util.logging.Logger;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
-import gehring.simon.hobby.swagger.testing.GlobalSettings;
 
-class FloatFactory {
+public class FloatFactory {
 
 	private final GlobalSettings settings;
 	private static final Logger LOGGER = Logger.getLogger(FloatFactory.class.toString());
@@ -52,7 +51,7 @@ class FloatFactory {
 								+ " leaves only one possible answer=" + (minFactor * schema.getMultipleOf()) + ".");
 				resultFactor = minFactor;
 			} else {
-				resultFactor = settings.nextLong(minFactor, maxFactor + 1);
+				resultFactor = settings.getNumberGenerator().nextLong(minFactor, maxFactor + 1);
 			}
 			Double doubleResult = schema.getMultipleOf() * resultFactor;
 			return doubleResult.floatValue();
@@ -61,7 +60,7 @@ class FloatFactory {
 		Float min = schema.getMinimum() == null ? Float.MIN_VALUE : schema.getMinimum().floatValue();
 		Float max = schema.getMaximum() == null ? Float.MAX_VALUE : schema.getMaximum().floatValue();
 
-		return settings.nextFloat(min, max);
+		return settings.getNumberGenerator().nextFloat(min, max);
 	}
 
 	protected Double buildCustomExampleDoubleBySchema(Schema schema) {
@@ -85,7 +84,7 @@ class FloatFactory {
 								+ " leaves only one possible answer=" + (minFactor * schema.getMultipleOf()) + ".");
 				resultFactor = minFactor;
 			} else {
-				resultFactor = settings.nextLong(minFactor, maxFactor + 1);
+				resultFactor = settings.getNumberGenerator().nextLong(minFactor, maxFactor + 1);
 			}
 			return schema.getMultipleOf() * resultFactor;
 
@@ -93,6 +92,6 @@ class FloatFactory {
 		Double min = schema.getMinimum() == null ? Double.MIN_VALUE : schema.getMinimum();
 		Double max = schema.getMaximum() == null ? Double.MAX_VALUE : schema.getMaximum();
 
-		return settings.nextDouble(min, max);
+		return settings.getNumberGenerator().nextDouble(min, max);
 	}
 }

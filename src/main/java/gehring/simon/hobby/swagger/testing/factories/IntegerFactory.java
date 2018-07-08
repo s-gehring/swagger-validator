@@ -3,7 +3,6 @@ package gehring.simon.hobby.swagger.testing.factories;
 import java.util.logging.Logger;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
-import gehring.simon.hobby.swagger.testing.GlobalSettings;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
 public class IntegerFactory {
@@ -36,7 +35,7 @@ public class IntegerFactory {
 					"'" + schema.getType() + "' maximum (" + max + ") is lower than its minimum (" + min + ").");
 		}
 
-		return settings.nextLong(min, max);
+		return settings.getNumberGenerator().nextLong(min, max);
 	}
 
 	protected Integer buildCustomExampleIntegerBySchema(Schema schema) {
@@ -60,7 +59,7 @@ public class IntegerFactory {
 					"'" + schema.getType() + "' maximum (" + max + ") is lower than its minimum (" + min + ").");
 		}
 
-		return settings.nextInt(min, max);
+		return settings.getNumberGenerator().nextInt(min, max);
 	}
 
 }
