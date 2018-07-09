@@ -7,13 +7,29 @@ import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
 public class SchemaOrBoolean extends SwaggerObject {
 
+	public static enum Type {
+		Boolean, Schema
+	}
 	private final Boolean underlyingBoolean;
+
 	private final Schema underlyingSchema;
 
 	private final Type underlyingType;
 
-	public static enum Type {
-		Schema, Boolean
+	public SchemaOrBoolean(String content) {
+		if (content.equalsIgnoreCase("false") || content.equalsIgnoreCase("true")) {
+			underlyingType = Type.Boolean;
+			underlyingBoolean = Boolean.parseBoolean(content);
+			underlyingSchema = null;
+		} else {
+			underlyingType = Type.Schema;
+			underlyingBoolean = null;
+			try {
+				underlyingSchema = new Schema(content);
+			} catch (IOException e) {
+				throw new MalformedSwaggerYamlException("Failed to parse schema '" + content + "'.", e);
+			}
+		}
 	}
 
 	public Boolean getBoolean() {
@@ -38,22 +54,6 @@ public class SchemaOrBoolean extends SwaggerObject {
 		if (underlyingType == Type.Boolean)
 			return Boolean.class;
 		return Schema.class;
-	}
-
-	public SchemaOrBoolean(String content) {
-		if (content.equalsIgnoreCase("false") || content.equalsIgnoreCase("true")) {
-			underlyingType = Type.Boolean;
-			underlyingBoolean = Boolean.parseBoolean(content);
-			underlyingSchema = null;
-		} else {
-			underlyingType = Type.Schema;
-			underlyingBoolean = null;
-			try {
-				underlyingSchema = new Schema(content);
-			} catch (IOException e) {
-				throw new MalformedSwaggerYamlException("Failed to parse schema '" + content + "'.", e);
-			}
-		}
 	}
 
 }

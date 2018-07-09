@@ -17,13 +17,13 @@ import java.util.Map;
 public class Response extends SwaggerObject {
 
   @JsonProperty
+  private Map<String, MediaType> content;
+
+  @JsonProperty
   private String description;
 
   @JsonProperty
   private Map<String, Header> headers;
-
-  @JsonProperty
-  private Map<String, MediaType> content;
 
   @JsonProperty
   private Map<String, Link> links;
@@ -46,17 +46,6 @@ public class Response extends SwaggerObject {
   }
 
   /**
-   * REQUIRED. A short description of the response. CommonMark syntax MAY be used
-   * for rich text representation.
-   * 
-   * @return description
-   *         the description
-   */
-  public String getDescription() {
-    return description;
-  }
-
-  /**
    * A map containing descriptions of potential response payloads. The key is a
    * media type or media type range and the value describes it. For responses that
    * match multiple keys, only the most specific key is applicable. e.g.
@@ -66,6 +55,17 @@ public class Response extends SwaggerObject {
    */
   public Map<String, MediaType> getContent() {
     return content;
+  }
+
+  /**
+   * REQUIRED. A short description of the response. CommonMark syntax MAY be used
+   * for rich text representation.
+   * 
+   * @return description
+   *         the description
+   */
+  public String getDescription() {
+    return description;
   }
 
   /**

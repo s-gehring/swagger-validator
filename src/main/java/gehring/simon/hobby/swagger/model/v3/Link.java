@@ -17,19 +17,19 @@ import java.util.Map;
 public class Link extends SwaggerObject {
 
   @JsonProperty
-  private String operationRef;
+  private String description;
 
   @JsonProperty
   private String operationId;
+
+  @JsonProperty
+  private String operationRef;
 
   @JsonProperty
   private Map<String, Object> parameters;
 
   @JsonProperty
   private Object requestBody;
-
-  @JsonProperty
-  private String description;
 
   @JsonProperty
   private Server server;

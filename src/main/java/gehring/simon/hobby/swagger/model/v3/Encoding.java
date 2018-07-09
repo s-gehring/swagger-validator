@@ -17,19 +17,19 @@ import java.util.Map;
 public class Encoding extends SwaggerObject {
 
   @JsonProperty
+  private Boolean allowReserved;
+
+  @JsonProperty
   private String contentType;
+
+  @JsonProperty
+  private Boolean explode;
 
   @JsonProperty
   private Map<String, Header> headers;
 
   @JsonProperty
   private String style;
-
-  @JsonProperty
-  private Boolean explode;
-
-  @JsonProperty
-  private Boolean allowReserved;
 
   /**
    * Determines whether the parameter value SHOULD allow reserved characters, as

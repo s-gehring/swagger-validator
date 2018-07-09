@@ -14,6 +14,10 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
  */
 public class Xml extends SwaggerObject {
 
+  /** The attribute. */
+  @JsonProperty
+  private Boolean attribute;
+
   /** The name. */
   @JsonProperty
   private String name;
@@ -25,10 +29,6 @@ public class Xml extends SwaggerObject {
   /** The prefix. */
   @JsonProperty
   private String prefix;
-
-  /** The attribute. */
-  @JsonProperty
-  private Boolean attribute;
 
   /** The wrapped. */
   @JsonProperty

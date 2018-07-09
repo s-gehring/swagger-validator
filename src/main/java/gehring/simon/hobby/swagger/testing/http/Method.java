@@ -10,20 +10,20 @@ package gehring.simon.hobby.swagger.testing.http;
  */
 public enum Method {
 
-  /** The get. */
-  GET,
-  /** The post. */
-  POST,
   /** The delete. */
   DELETE,
-  /** The options. */
-  OPTIONS,
+  /** The get. */
+  GET,
   /** The head. */
   HEAD,
+  /** The options. */
+  OPTIONS,
   /** The patch. */
   PATCH,
-  /** The trace. */
-  TRACE,
+  /** The post. */
+  POST,
   /** The put. */
-  PUT
+  PUT,
+  /** The trace. */
+  TRACE
 }

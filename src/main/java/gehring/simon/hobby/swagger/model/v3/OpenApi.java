@@ -18,28 +18,28 @@ import java.util.Map;
 public class OpenApi extends SwaggerObject {
 
   @JsonProperty
-  private String openapi;
+  private Components components;
+
+  @JsonProperty
+  private ExternalDocumentation externalDocs;
 
   @JsonProperty
   private Info info;
 
   @JsonProperty
-  private List<Server> servers;
+  private String openapi;
 
   @JsonProperty
   private Map<String, PathItem> paths;
 
   @JsonProperty
-  private Components components;
-
-  @JsonProperty
   private List<SecurityRequirement> security;
 
   @JsonProperty
-  private List<Tag> tags;
+  private List<Server> servers;
 
   @JsonProperty
-  private ExternalDocumentation externalDocs;
+  private List<Tag> tags;
 
   /**
    * An element to hold various schemas for the specification.

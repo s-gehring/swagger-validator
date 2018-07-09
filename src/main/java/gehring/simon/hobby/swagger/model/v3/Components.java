@@ -17,31 +17,31 @@ import java.util.Map;
 public class Components extends SwaggerObject {
 
   @JsonProperty
-  private Map<String, Schema> schemas;
-
-  @JsonProperty
-  private Map<String, Response> responses;
-
-  @JsonProperty
-  private Map<String, Parameter> parameters;
+  private Map<String, Map<String, PathItem>> callbacks;
 
   @JsonProperty
   private Map<String, Example> examples;
 
   @JsonProperty
-  private Map<String, RequestBody> requestBodies;
-
-  @JsonProperty
   private Map<String, Header> headers;
-
-  @JsonProperty
-  private Map<String, SecurityScheme> securitySchemes;
 
   @JsonProperty
   private Map<String, Link> links;
 
   @JsonProperty
-  private Map<String, Map<String, PathItem>> callbacks;
+  private Map<String, Parameter> parameters;
+
+  @JsonProperty
+  private Map<String, RequestBody> requestBodies;
+
+  @JsonProperty
+  private Map<String, Response> responses;
+
+  @JsonProperty
+  private Map<String, Schema> schemas;
+
+  @JsonProperty
+  private Map<String, SecurityScheme> securitySchemes;
 
   /**
    * An object to hold reusable Callback Objects.

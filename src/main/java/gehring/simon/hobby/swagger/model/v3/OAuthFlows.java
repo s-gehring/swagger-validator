@@ -14,6 +14,14 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
  */
 public class OAuthFlows extends SwaggerObject {
 
+  /** The authorization code. */
+  @JsonProperty
+  private OAuthFlow authorizationCode;
+
+  /** The client credentials. */
+  @JsonProperty
+  private OAuthFlow clientCredentials;
+
   /** The implicit. */
   @JsonProperty
   private OAuthFlow implicit;
@@ -21,14 +29,6 @@ public class OAuthFlows extends SwaggerObject {
   /** The password. */
   @JsonProperty
   private OAuthFlow password;
-
-  /** The client credentials. */
-  @JsonProperty
-  private OAuthFlow clientCredentials;
-
-  /** The authorization code. */
-  @JsonProperty
-  private OAuthFlow authorizationCode;
 
   /**
    * Gets the authorization code.

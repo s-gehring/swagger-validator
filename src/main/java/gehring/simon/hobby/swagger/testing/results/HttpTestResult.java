@@ -12,6 +12,21 @@ public class HttpTestResult extends ErrorTestResult {
   private int     httpCode;
   private String  httpResponse;
 
+  /**
+   * Instantiates a new test result.
+   *
+   * @param connection
+   *          The connection to extract the information from.
+   */
+  public HttpTestResult(final HttpURLConnection connection) {
+    if (connection == null) {
+      throw new NullPointerException("The connection to extract information from is null.");
+    }
+    httpCode = extractHttpCode(connection);
+    error = extractErrorValue(httpCode);
+    httpResponse = extractHttpResponse(connection, error);
+  }
+
   private boolean extractErrorValue(final int httpCode) {
     return httpCode < 200 || httpCode >= 300;
   }
@@ -68,37 +83,22 @@ public class HttpTestResult extends ErrorTestResult {
     return builder.toString();
   }
 
-  /**
-   * Instantiates a new test result.
-   *
-   * @param connection
-   *          The connection to extract the information from.
-   */
-  public HttpTestResult(final HttpURLConnection connection) {
-    if (connection == null) {
-      throw new NullPointerException("The connection to extract information from is null.");
-    }
-    httpCode = extractHttpCode(connection);
-    error = extractErrorValue(httpCode);
-    httpResponse = extractHttpResponse(connection, error);
-  }
-
-  public int httpResponseCode() {
-    return httpCode;
+  @Override
+  public boolean hasErrors() {
+    return error;
   }
 
   public String httpResponse() {
     return httpResponse;
   }
 
+  public int httpResponseCode() {
+    return httpCode;
+  }
+
   @Override
   public String toString() {
     return super.toString() + "HTTP Response code was " + httpResponseCode() + ". The answer was "
         + httpResponse.length() + " characters long.";
-  }
-
-  @Override
-  public boolean hasErrors() {
-    return error;
   }
 }

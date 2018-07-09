@@ -14,37 +14,37 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
  */
 public class SecurityScheme extends SwaggerObject {
 
-  /** The type. */
+  /** The bearer format. */
   @JsonProperty
-  private String type;
+  private String bearerFormat;
 
   /** The description. */
   @JsonProperty
   private String description;
 
-  /** The name. */
+  /** The flows. */
   @JsonProperty
-  private String name;
+  private OAuthFlows flows;
 
   /** The in. */
   @JsonProperty
   private String in;
 
-  /** The scheme. */
+  /** The name. */
   @JsonProperty
-  private String scheme;
-
-  /** The bearer format. */
-  @JsonProperty
-  private String bearerFormat;
-
-  /** The flows. */
-  @JsonProperty
-  private OAuthFlows flows;
+  private String name;
 
   /** The open id connect url. */
   @JsonProperty
   private String openIdConnectUrl;
+
+  /** The scheme. */
+  @JsonProperty
+  private String scheme;
+
+  /** The type. */
+  @JsonProperty
+  private String type;
 
   /**
    * Instantiates a new security scheme.

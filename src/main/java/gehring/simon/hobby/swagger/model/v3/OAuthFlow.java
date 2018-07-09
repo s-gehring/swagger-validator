@@ -20,10 +20,6 @@ public class OAuthFlow extends SwaggerObject {
   @JsonProperty
   private String authorizationUrl;
 
-  /** The token url. */
-  @JsonProperty
-  private String tokenUrl;
-
   /** The refresh url. */
   @JsonProperty
   private String refreshUrl;
@@ -31,6 +27,10 @@ public class OAuthFlow extends SwaggerObject {
   /** The scopes. */
   @JsonProperty
   private Map<String, String> scopes;
+
+  /** The token url. */
+  @JsonProperty
+  private String tokenUrl;
 
   /**
    * Gets the authorization url.

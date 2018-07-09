@@ -12,11 +12,6 @@ public class TestRandomNumberGenerator {
 
 	private int MAX_STEPS_PER_TEST = 1000000;
 
-	@Before
-	public void setUp() {
-		gen = new RandomNumberGenerator(0L);
-	}
-
 	private Long getStep(long min, long max) {
 		BigInteger minBig = BigInteger.valueOf(min), maxBig = BigInteger.valueOf(max);
 		BigInteger maxStepsBig = BigInteger.valueOf(MAX_STEPS_PER_TEST);
@@ -31,6 +26,11 @@ public class TestRandomNumberGenerator {
 		// result + ".");
 
 		return result;
+	}
+
+	@Before
+	public void setUp() {
+		gen = new RandomNumberGenerator(0L);
 	}
 
 	@Test
@@ -48,22 +48,6 @@ public class TestRandomNumberGenerator {
 			if (curNum == Byte.MAX_VALUE)
 				return;
 
-		}
-	}
-
-	@Test
-	public void testNextShortBoundary() {
-		Short step = getStep(Short.MIN_VALUE, Short.MAX_VALUE).shortValue();
-		short curNum = Short.MIN_VALUE;
-		for (int i = 0; i < MAX_STEPS_PER_TEST; ++i) {
-			short result = gen.nextShort(curNum, (short) (curNum + 1));
-			if (result != curNum) {
-				fail("RandomInt between " + curNum + " (inkl) and " + (curNum + 1) + " (exkl) should be exactly "
-						+ curNum + ", but is actually " + result + ".");
-			}
-			curNum = (short) (curNum + step);
-			if (curNum == Short.MAX_VALUE)
-				return;
 		}
 	}
 
@@ -97,6 +81,22 @@ public class TestRandomNumberGenerator {
 			curNum = curNum + step;
 		}
 
+	}
+
+	@Test
+	public void testNextShortBoundary() {
+		Short step = getStep(Short.MIN_VALUE, Short.MAX_VALUE).shortValue();
+		short curNum = Short.MIN_VALUE;
+		for (int i = 0; i < MAX_STEPS_PER_TEST; ++i) {
+			short result = gen.nextShort(curNum, (short) (curNum + 1));
+			if (result != curNum) {
+				fail("RandomInt between " + curNum + " (inkl) and " + (curNum + 1) + " (exkl) should be exactly "
+						+ curNum + ", but is actually " + result + ".");
+			}
+			curNum = (short) (curNum + step);
+			if (curNum == Short.MAX_VALUE)
+				return;
+		}
 	}
 
 }

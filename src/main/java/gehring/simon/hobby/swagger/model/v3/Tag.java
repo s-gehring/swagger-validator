@@ -15,13 +15,13 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
 public class Tag extends SwaggerObject {
 
   @JsonProperty
-  private String name;
-
-  @JsonProperty
   private String description;
 
   @JsonProperty
   private ExternalDocumentation externalDocs;
+
+  @JsonProperty
+  private String name;
 
   /**
    * A short description for the tag. CommonMark syntax MAY be used for rich text

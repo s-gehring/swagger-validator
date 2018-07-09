@@ -16,14 +16,14 @@ import java.util.List;
  */
 public class ServerVariable extends SwaggerObject {
 
-  @JsonProperty("enum")
-  private List<String> enumField;
-
   @JsonProperty
   private String defaultField;
 
   @JsonProperty
   private String description;
+
+  @JsonProperty("enum")
+  private List<String> enumField;
 
   /**
    * REQUIRED. The default value to use for substitution, and to send, if an
@@ -37,16 +37,6 @@ public class ServerVariable extends SwaggerObject {
   }
 
   /**
-   * An enumeration of string values to be used if the substitution options are
-   * from a limited set.
-   *
-   * @return the enum
-   */
-  public List<String> getEnum() {
-    return enumField;
-  }
-
-  /**
    * An optional description for the server variable. CommonMark syntax MAY be
    * used for rich text representation.
    *
@@ -54,5 +44,15 @@ public class ServerVariable extends SwaggerObject {
    */
   public String getDescription() {
     return description;
+  }
+
+  /**
+   * An enumeration of string values to be used if the substitution options are
+   * from a limited set.
+   *
+   * @return the enum
+   */
+  public List<String> getEnum() {
+    return enumField;
   }
 }

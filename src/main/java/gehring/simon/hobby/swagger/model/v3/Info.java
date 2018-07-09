@@ -15,19 +15,19 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
 public class Info extends SwaggerObject {
 
   @JsonProperty
-  private String title;
+  private Contact contact;
 
   @JsonProperty
   private String description;
 
   @JsonProperty
+  private License license;
+
+  @JsonProperty
   private String termsOfService;
 
   @JsonProperty
-  private Contact contact;
-
-  @JsonProperty
-  private License license;
+  private String title;
 
   @JsonProperty
   private String version;

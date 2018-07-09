@@ -17,7 +17,7 @@ import java.util.Map;
 public class MediaType extends SwaggerObject {
 
   @JsonProperty
-  private Schema schema;
+  private Map<String, Encoding> encoding;
 
   @JsonProperty
   private Example example; // In spec it's actually "Any", not example
@@ -26,7 +26,7 @@ public class MediaType extends SwaggerObject {
   private Map<String, Example> examples;
 
   @JsonProperty
-  private Map<String, Encoding> encoding;
+  private Schema schema;
 
   /**
    * A map between a property name and its encoding information. The key, being

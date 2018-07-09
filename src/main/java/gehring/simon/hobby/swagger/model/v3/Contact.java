@@ -15,13 +15,13 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
 public class Contact extends SwaggerObject {
 
   @JsonProperty
+  private String email;
+
+  @JsonProperty
   private String name;
 
   @JsonProperty
   private String url;
-
-  @JsonProperty
-  private String email;
 
   /**
    * The email address of the contact person/organization. MUST be in the format

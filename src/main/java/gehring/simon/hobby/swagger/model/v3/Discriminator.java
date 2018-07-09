@@ -16,13 +16,13 @@ import java.util.Map;
  */
 public class Discriminator extends SwaggerObject {
 
-  /** The property name. */
-  @JsonProperty
-  private String propertyName;
-
   /** The mapping. */
   @JsonProperty
   private Map<String, String> mapping;
+
+  /** The property name. */
+  @JsonProperty
+  private String propertyName;
 
   /**
    * Gets the mapping.

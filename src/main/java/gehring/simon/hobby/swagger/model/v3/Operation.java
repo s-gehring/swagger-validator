@@ -18,10 +18,10 @@ import java.util.Map;
 public class Operation extends SwaggerObject {
 
   @JsonProperty
-  private List<String> tags;
+  private Map<String, Map<String, PathItem>> callbacks;
 
   @JsonProperty
-  private String summary;
+  private Boolean deprecated;
 
   @JsonProperty
   private String description;
@@ -42,16 +42,16 @@ public class Operation extends SwaggerObject {
   private Map<String, Response> responses;
 
   @JsonProperty
-  private Map<String, Map<String, PathItem>> callbacks;
-
-  @JsonProperty
-  private Boolean deprecated;
-
-  @JsonProperty
   private List<SecurityRequirement> security;
 
   @JsonProperty
   private List<Server> servers;
+
+  @JsonProperty
+  private String summary;
+
+  @JsonProperty
+  private List<String> tags;
 
   /**
    * A map of possible out-of band callbacks related to the parent operation. The

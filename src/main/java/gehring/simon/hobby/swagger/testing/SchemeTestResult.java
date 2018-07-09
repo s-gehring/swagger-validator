@@ -17,13 +17,13 @@ import java.util.logging.Logger;
  */
 public class SchemeTestResult extends TestResultCollection {
 
-  private boolean containsErrors = false;
-
   /** The Constant LOGGER. */
   private static final Logger LOGGER = Logger.getLogger(SchemeTestResult.class.getName());
 
   /** The api. */
   private OpenApi api = null;
+
+  private boolean containsErrors = false;
 
   /**
    * Instantiates a new scheme test result.
@@ -34,23 +34,6 @@ public class SchemeTestResult extends TestResultCollection {
   public SchemeTestResult(final OpenApi api) {
     super();
     this.api = api;
-  }
-
-  /**
-   * Execute tests on one server.
-   *
-   * @param server
-   *          the server
-   * @return true, if successful
-   */
-  public boolean executeTestsOnOneServer(final Server server) {
-    final Map<String, PathItem> paths = api.getPaths();
-    final ServerTestResult testResult = new ServerTestResult(server, paths);
-    this.add(testResult);
-    if (testResult.hasErrors()) {
-      containsErrors = true;
-    }
-    return true;
   }
 
   /**
@@ -67,6 +50,23 @@ public class SchemeTestResult extends TestResultCollection {
       executeTestsOnOneServer(server);
     }
 
+    return true;
+  }
+
+  /**
+   * Execute tests on one server.
+   *
+   * @param server
+   *          the server
+   * @return true, if successful
+   */
+  public boolean executeTestsOnOneServer(final Server server) {
+    final Map<String, PathItem> paths = api.getPaths();
+    final ServerTestResult testResult = new ServerTestResult(server, paths);
+    this.add(testResult);
+    if (testResult.hasErrors()) {
+      containsErrors = true;
+    }
     return true;
   }
 

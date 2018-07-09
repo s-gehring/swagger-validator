@@ -18,10 +18,10 @@ import java.util.Map;
 public class RequestBody extends SwaggerObject {
 
   @JsonProperty
-  private String description;
+  private Map<String, MediaType> content;
 
   @JsonProperty
-  private Map<String, MediaType> content;
+  private String description;
 
   @JsonProperty
   private Boolean required;
@@ -48,15 +48,6 @@ public class RequestBody extends SwaggerObject {
   }
 
   /**
-   * Determines if the request body is required in the request. Defaults to false.
-   *
-   * @return the required
-   */
-  public Boolean getRequired() {
-    return required;
-  }
-
-  /**
    * A brief description of the request body. This could contain examples of use.
    * CommonMark syntax MAY be used for rich text representation.
    *
@@ -64,5 +55,14 @@ public class RequestBody extends SwaggerObject {
    */
   public String getDescription() {
     return description;
+  }
+
+  /**
+   * Determines if the request body is required in the request. Defaults to false.
+   *
+   * @return the required
+   */
+  public Boolean getRequired() {
+    return required;
   }
 }

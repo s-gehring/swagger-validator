@@ -7,10 +7,9 @@ import gehring.simon.hobby.swagger.model.v3.Schema;
 import gehring.simon.hobby.swagger.model.v3.SchemaOrBoolean;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
-public class ObjectFactory {
-	private final GlobalSettings settings;
-	@SuppressWarnings("unused")
+public class ObjectFactory extends Factory {
 	private static final Logger LOGGER = Logger.getLogger(ObjectFactory.class.toString());
+	private final GlobalSettings settings;
 
 	protected ObjectFactory(GlobalSettings settings) {
 		this.settings = settings;
@@ -44,7 +43,7 @@ public class ObjectFactory {
 			}
 		}
 
-		// Todo: Some more properties. Not additional ones and not required ones. Just
+		// TODO: Some more properties. Not additional ones and not required ones. Just
 		// defined ones.
 
 		SchemaOrBoolean additionalProperties = schema.getAdditionalProperties();

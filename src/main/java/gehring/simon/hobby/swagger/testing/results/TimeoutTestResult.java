@@ -15,14 +15,14 @@ public class TimeoutTestResult extends ErrorTestResult {
   }
 
   @Override
-  public String toString() {
-    return super.toString() + "The timeout of " + connectTimeout
-        + " was reached before the server connected.";
+  public boolean hasErrors() {
+    return true;
   }
 
   @Override
-  public boolean hasErrors() {
-    return true;
+  public String toString() {
+    return super.toString() + "The timeout of " + connectTimeout
+        + " was reached before the server connected.";
   }
 
 }

@@ -17,14 +17,38 @@ import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 /**
  * A factory for creating Example objects.
  */
-public class ExampleFactory {
+public class ExampleFactory extends Factory {
 
 	private static final Logger LOGGER = Logger.getLogger(ExampleFactory.class.toString());
 
 	private GlobalSettings settings;
 
-	public String buildCustomStringifiedExampleBySchema(Schema schema) {
-		return buildCustomExampleBySchema(schema).toString();
+	public ExampleFactory() {
+		this(GlobalSettings.getDefaultSettings());
+	}
+
+	public ExampleFactory(GlobalSettings settings) {
+		this.settings = settings;
+	}
+
+	public String buildCustomExample(final Parameter para) {
+		/*
+		 * Either schema or content is set. Not both.
+		 */
+		if (para.getSchema() == null && para.getContent() == null)
+			throw new MalformedSwaggerYamlException("Parameter '" + para.getName() + "' with description '"
+					+ para.getDescription() + "' has neither a schema nor a content definition.");
+
+		if (para.getContent() != null && para.getSchema() != null)
+			throw new MalformedSwaggerYamlException("Parameter '" + para.getName() + "' with description '"
+					+ para.getDescription() + "' has a schema and a content definition. Cannot have both.");
+
+		if (para.getSchema() != null) {
+			return buildCustomStringifiedExampleBySchema(para.getSchema());
+		} else {
+			// para.getContent != null
+		}
+		return null;
 	}
 
 	protected Object buildCustomExampleBySchema(Schema schema) {
@@ -88,42 +112,8 @@ public class ExampleFactory {
 		throw new MalformedSwaggerYamlException("Don't recognize type '" + schema.getType() + "' in a given schema.");
 	}
 
-	public String buildCustomExample(final Parameter para) {
-		/*
-		 * Either schema or content is set. Not both.
-		 */
-		if (para.getSchema() == null && para.getContent() == null)
-			throw new MalformedSwaggerYamlException("Parameter '" + para.getName() + "' with description '"
-					+ para.getDescription() + "' has neither a schema nor a content definition.");
-
-		if (para.getContent() != null && para.getSchema() != null)
-			throw new MalformedSwaggerYamlException("Parameter '" + para.getName() + "' with description '"
-					+ para.getDescription() + "' has a schema and a content definition. Cannot have both.");
-
-		if (para.getSchema() != null) {
-			return buildCustomStringifiedExampleBySchema(para.getSchema());
-		} else {
-			// para.getContent != null
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the example object.
-	 *
-	 * @param parameter
-	 *            the parameter
-	 * @return the example object
-	 */
-	// TODO: Evtl. mehrere examples benutzen?
-	public String getExampleObject(final Parameter parameter) {
-		if (parameter.getExample() == null) {
-			if (parameter.getExamples() == null || parameter.getExamples().isEmpty()) {
-				return buildCustomExample(parameter);
-			}
-			return buildExampleFromExample(parameter.getExamples().values().iterator().next());
-		}
-		return buildExampleFromExample(parameter.getExample());
+	public String buildCustomStringifiedExampleBySchema(Schema schema) {
+		return buildCustomExampleBySchema(schema).toString();
 	}
 
 	/**
@@ -144,12 +134,22 @@ public class ExampleFactory {
 		}
 	}
 
-	public ExampleFactory(GlobalSettings settings) {
-		this.settings = settings;
-	}
-
-	public ExampleFactory() {
-		this(GlobalSettings.getDefaultSettings());
+	/**
+	 * Gets the example object.
+	 *
+	 * @param parameter
+	 *            the parameter
+	 * @return the example object
+	 */
+	// TODO: Evtl. mehrere examples benutzen?
+	public String getExampleObject(final Parameter parameter) {
+		if (parameter.getExample() == null) {
+			if (parameter.getExamples() == null || parameter.getExamples().isEmpty()) {
+				return buildCustomExample(parameter);
+			}
+			return buildExampleFromExample(parameter.getExamples().values().iterator().next());
+		}
+		return buildExampleFromExample(parameter.getExample());
 	}
 
 }

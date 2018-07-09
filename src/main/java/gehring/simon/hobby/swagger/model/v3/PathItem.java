@@ -17,7 +17,7 @@ import java.util.List;
 public class PathItem extends SwaggerObject {
 
   @JsonProperty
-  private String summary;
+  private Operation delete;
 
   @JsonProperty
   private String description;
@@ -26,31 +26,31 @@ public class PathItem extends SwaggerObject {
   private Operation get;
 
   @JsonProperty
-  private Operation put;
-
-  @JsonProperty
-  private Operation post;
-
-  @JsonProperty
-  private Operation delete;
+  private Operation head;
 
   @JsonProperty
   private Operation options;
 
   @JsonProperty
-  private Operation head;
+  private List<Parameter> parameters;
 
   @JsonProperty
   private Operation patch;
 
   @JsonProperty
-  private Operation trace;
+  private Operation post;
+
+  @JsonProperty
+  private Operation put;
 
   @JsonProperty
   private List<Server> servers;
 
   @JsonProperty
-  private List<Parameter> parameters;
+  private String summary;
+
+  @JsonProperty
+  private Operation trace;
 
   /**
    * A definition of a DELETE operation on this path.

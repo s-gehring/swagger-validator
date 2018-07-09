@@ -34,28 +34,6 @@ public class MethodTestResult extends TestResultCollection {
 	private boolean containsErrors = false;
 
 	/**
-	 * Execute connection.
-	 *
-	 * @param con
-	 *            the con
-	 */
-	private void executeConnection(final HttpURLConnection con) {
-		AbstractTestResult result;
-
-		try {
-			con.connect();
-			result = new HttpTestResult(con);
-		} catch (IOException e) {
-			result = new TimeoutTestResult(con);
-		}
-		if (result.hasErrors()) {
-			containsErrors = true;
-		}
-
-		this.add(result);
-	}
-
-	/**
 	 * Instantiates a new method test result.
 	 *
 	 * @param how
@@ -120,6 +98,28 @@ public class MethodTestResult extends TestResultCollection {
 		}
 
 		executeConnection(con);
+	}
+
+	/**
+	 * Execute connection.
+	 *
+	 * @param con
+	 *            the con
+	 */
+	private void executeConnection(final HttpURLConnection con) {
+		AbstractTestResult result;
+
+		try {
+			con.connect();
+			result = new HttpTestResult(con);
+		} catch (IOException e) {
+			result = new TimeoutTestResult(con);
+		}
+		if (result.hasErrors()) {
+			containsErrors = true;
+		}
+
+		this.add(result);
 	}
 
 	@Override

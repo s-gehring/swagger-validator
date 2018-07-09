@@ -17,10 +17,10 @@ import java.util.Map;
 public class Server extends SwaggerObject {
 
   @JsonProperty
-  private String url;
+  private String description;
 
   @JsonProperty
-  private String description;
+  private String url;
 
   @JsonProperty
   private Map<String, ServerVariable> variables;

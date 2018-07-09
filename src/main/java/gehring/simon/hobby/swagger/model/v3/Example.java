@@ -15,16 +15,16 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
 public class Example extends SwaggerObject {
 
   @JsonProperty
-  private String summary;
-
-  @JsonProperty
   private String description;
 
   @JsonProperty
-  private Object value;
+  private String externalValue;
 
   @JsonProperty
-  private String externalValue;
+  private String summary;
+
+  @JsonProperty
+  private Object value;
 
   /**
    * Instantiates a new example.

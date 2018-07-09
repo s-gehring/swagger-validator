@@ -7,6 +7,14 @@ public class RandomAlphanumericStringGenerator implements StringGenerator {
 	private static final String alphanumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	private Random random;
 
+	public RandomAlphanumericStringGenerator(long seed) {
+		this(new Random(seed));
+	}
+
+	public RandomAlphanumericStringGenerator(Random r) {
+		random = r;
+	}
+
 	@Override
 	public String nextString(int minLength, int maxLength) {
 		int length = random.nextInt(maxLength - minLength) + minLength;
@@ -15,14 +23,6 @@ public class RandomAlphanumericStringGenerator implements StringGenerator {
 			result.append(alphanumericCharacters.charAt(random.nextInt(alphanumericCharacters.length())));
 		}
 		return result.toString();
-	}
-
-	public RandomAlphanumericStringGenerator(Random r) {
-		random = r;
-	}
-
-	public RandomAlphanumericStringGenerator(long seed) {
-		this(new Random(seed));
 	}
 
 }

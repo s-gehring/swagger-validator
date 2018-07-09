@@ -21,85 +21,85 @@ import gehring.simon.hobby.swagger.model.SwaggerObject;
 public class Schema extends SwaggerObject {
 
 	@JsonProperty
-	private String title;
-
-	@JsonProperty
-	private String description;
-
-	@JsonProperty
-	private Double multipleOf;
-
-	@JsonProperty
-	private Double maximum;
-
-	@JsonProperty
-	private Boolean exclusiveMaximum;
-
-	@JsonProperty
-	private Double minimum;
-
-	@JsonProperty
-	private Boolean exclusiveMinimum;
-
-	@JsonProperty
-	private Integer maxLength;
-
-	@JsonProperty
-	private Integer minLength;
-
-	@JsonProperty
-	private String pattern;
-
-	@JsonProperty
-	private Integer maxItems;
-
-	@JsonProperty
-	private Integer minItems;
-
-	@JsonProperty
-	private Boolean uniqueItems;
-
-	@JsonProperty
-	private Integer maxProperties;
-
-	@JsonProperty
-	private Integer minProperties;
-
-	@JsonProperty
-	private List<String> required;
-
-	@JsonProperty("enum")
-	private List<Object> enumField;
-
-	@JsonProperty
-	private String type;
+	private SchemaOrBoolean additionalProperties;
 
 	@JsonProperty
 	private List<Schema> allOf;
 
 	@JsonProperty
-	private List<Schema> oneOf;
-
-	@JsonProperty
 	private List<Schema> anyOf;
 
+	@JsonProperty("default")
+	private Object defaultField;
+
 	@JsonProperty
-	private Schema not;
+	private String description;
+
+	@JsonProperty("enum")
+	private List<Object> enumField;
+
+	@JsonProperty
+	private Boolean exclusiveMaximum;
+
+	@JsonProperty
+	private Boolean exclusiveMinimum;
+
+	@JsonProperty
+	private String format;
 
 	@JsonProperty
 	private Map<String, Schema> items;
 
 	@JsonProperty
+	private Double maximum;
+
+	@JsonProperty
+	private Integer maxItems;
+
+	@JsonProperty
+	private Integer maxLength;
+
+	@JsonProperty
+	private Integer maxProperties;
+
+	@JsonProperty
+	private Double minimum;
+
+	@JsonProperty
+	private Integer minItems;
+
+	@JsonProperty
+	private Integer minLength;
+
+	@JsonProperty
+	private Integer minProperties;
+
+	@JsonProperty
+	private Double multipleOf;
+
+	@JsonProperty
+	private Schema not;
+
+	@JsonProperty
+	private List<Schema> oneOf;
+
+	@JsonProperty
+	private String pattern;
+
+	@JsonProperty
 	private Map<String, Schema> properties;
 
 	@JsonProperty
-	private SchemaOrBoolean additionalProperties;
+	private List<String> required;
 
 	@JsonProperty
-	private String format;
+	private String title;
 
-	@JsonProperty("default")
-	private Object defaultField;
+	@JsonProperty
+	private String type;
+
+	@JsonProperty
+	private Boolean uniqueItems;
 
 	/**
 	 * Instantiates a new schema.
@@ -122,79 +122,6 @@ public class Schema extends SwaggerObject {
 	 */
 	public Schema(final String reference) throws JsonProcessingException, MalformedURLException, IOException {
 		super(reference);
-	}
-
-	/**
-	 * <p>
-	 * There are no restrictions placed on the value of this keyword.
-	 * </p>
-	 *
-	 * <p>
-	 * This keyword can be used to supply a default JSON value associated with a
-	 * particular schema. It is RECOMMENDED that a default value be valid against
-	 * the associated schema.
-	 * </p>
-	 *
-	 * <p>
-	 * This keyword MAY be used in root schemas, and in any subschemas.
-	 * </p>
-	 *
-	 * <p style='color:red'>
-	 * The default value represents what would be assumed by the consumer of the
-	 * input as the value of the schema if one is not provided. Unlike JSON Schema,
-	 * the value MUST conform to the defined type for the Schema Object defined at
-	 * the same level. For example, if type is string, then default can be "foo" but
-	 * cannot be 1.
-	 * </p>
-	 *
-	 * @return the default
-	 */
-	public Object getDefault() {
-		return defaultField;
-	}
-
-	/**
-	 * <p>
-	 * [This value] can be used to decorate a user interface with information about
-	 * the data produced by this user interface. [A] description will provide
-	 * explanation about the purpose of the instance described by this schema.
-	 * </p>
-	 *
-	 * <p style='color:red'>
-	 * CommonMark syntax MAY be used for rich text representation.
-	 * </p>
-	 *
-	 * @see <a href=
-	 *      "https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-6.1">JSON
-	 *      Schema Validation 6.1 "title" and "description"</a>
-	 *
-	 * @return description the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * <p>
-	 * [...] This array SHOULD have at least one element. Elements in the array
-	 * SHOULD be unique.
-	 * </p>
-	 * <p>
-	 * Elements in the array MAY be of any type, including null.
-	 * </p>
-	 * <p>
-	 * An instance validates successfully against this keyword if its value is equal
-	 * to one of the elements in this keyword's array value.
-	 * </p>
-	 *
-	 * @see <a href=
-	 *      "https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.20">JSON
-	 *      Schema Validation 5.20 enum</a>
-	 *
-	 * @return the enum
-	 */
-	public List<Object> getEnum() {
-		return enumField;
 	}
 
 	/**
@@ -293,6 +220,79 @@ public class Schema extends SwaggerObject {
 	 */
 	public List<Schema> getAnyOf() {
 		return anyOf;
+	}
+
+	/**
+	 * <p>
+	 * There are no restrictions placed on the value of this keyword.
+	 * </p>
+	 *
+	 * <p>
+	 * This keyword can be used to supply a default JSON value associated with a
+	 * particular schema. It is RECOMMENDED that a default value be valid against
+	 * the associated schema.
+	 * </p>
+	 *
+	 * <p>
+	 * This keyword MAY be used in root schemas, and in any subschemas.
+	 * </p>
+	 *
+	 * <p style='color:red'>
+	 * The default value represents what would be assumed by the consumer of the
+	 * input as the value of the schema if one is not provided. Unlike JSON Schema,
+	 * the value MUST conform to the defined type for the Schema Object defined at
+	 * the same level. For example, if type is string, then default can be "foo" but
+	 * cannot be 1.
+	 * </p>
+	 *
+	 * @return the default
+	 */
+	public Object getDefault() {
+		return defaultField;
+	}
+
+	/**
+	 * <p>
+	 * [This value] can be used to decorate a user interface with information about
+	 * the data produced by this user interface. [A] description will provide
+	 * explanation about the purpose of the instance described by this schema.
+	 * </p>
+	 *
+	 * <p style='color:red'>
+	 * CommonMark syntax MAY be used for rich text representation.
+	 * </p>
+	 *
+	 * @see <a href=
+	 *      "https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-6.1">JSON
+	 *      Schema Validation 6.1 "title" and "description"</a>
+	 *
+	 * @return description the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * <p>
+	 * [...] This array SHOULD have at least one element. Elements in the array
+	 * SHOULD be unique.
+	 * </p>
+	 * <p>
+	 * Elements in the array MAY be of any type, including null.
+	 * </p>
+	 * <p>
+	 * An instance validates successfully against this keyword if its value is equal
+	 * to one of the elements in this keyword's array value.
+	 * </p>
+	 *
+	 * @see <a href=
+	 *      "https://tools.ietf.org/html/draft-wright-json-schema-validation-00#section-5.20">JSON
+	 *      Schema Validation 5.20 enum</a>
+	 *
+	 * @return the enum
+	 */
+	public List<Object> getEnum() {
+		return enumField;
 	}
 
 	/**

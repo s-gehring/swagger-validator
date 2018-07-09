@@ -18,34 +18,19 @@ import java.util.Map;
 public class Parameter extends SwaggerObject {
 
   @JsonProperty
-  private String name;
-
-  @JsonProperty
-  private String in;
-
-  @JsonProperty
-  private String description;
-
-  @JsonProperty
-  private Boolean required;
-
-  @JsonProperty
-  private Boolean deprecated;
-
-  @JsonProperty
   private Boolean allowEmptyValue;
-
-  @JsonProperty
-  private String style;
-
-  @JsonProperty
-  private Boolean explode;
 
   @JsonProperty
   private Boolean allowReserved;
 
   @JsonProperty
-  private Schema schema;
+  private Map<String, MediaType> content;
+
+  @JsonProperty
+  private Boolean deprecated;
+
+  @JsonProperty
+  private String description;
 
   @JsonProperty
   private Example example; // In spec it's actually "Any", and not example.
@@ -54,7 +39,22 @@ public class Parameter extends SwaggerObject {
   private Map<String, Example> examples;
 
   @JsonProperty
-  private Map<String, MediaType> content;
+  private Boolean explode;
+
+  @JsonProperty
+  private String in;
+
+  @JsonProperty
+  private String name;
+
+  @JsonProperty
+  private Boolean required;
+
+  @JsonProperty
+  private Schema schema;
+
+  @JsonProperty
+  private String style;
 
   /**
    * Sets the ability to pass empty-valued parameters. This is valid only for

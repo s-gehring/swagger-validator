@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  */
 public class PathTestResult extends TestResultCollection {
 
-  private boolean containsErrors = false;
-
   /** The Constant LOGGER. */
   private static final Logger LOGGER = Logger.getLogger(PathTestResult.class.getName());
+
+  private boolean containsErrors = false;
 
   /**
    * Instantiates a new path test result.

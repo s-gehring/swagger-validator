@@ -2,7 +2,7 @@ package gehring.simon.hobby.swagger.testing.factories;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
 
-public class StringFactory {
+public class StringFactory extends Factory {
 
 	private final GlobalSettings settings;
 
