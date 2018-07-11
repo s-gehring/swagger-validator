@@ -9,7 +9,7 @@ public class StatusCode {
 	private final String title;
 	private final String msg;
 
-	private static final Map<Integer, StatusCode> codes = new HashMap<>();
+	private transient static Map<Integer, StatusCode> codes = null;
 
 	private static void initialize() {
 		codes.put(100, new StatusCode(100, "Continue",
@@ -195,7 +195,8 @@ public class StatusCode {
 	}
 
 	public static StatusCode getByCode(Integer code) {
-		if (codes.isEmpty()) {
+		if (codes == null) {
+			codes = new HashMap<>();
 			initialize();
 		}
 		return codes.get(code);
