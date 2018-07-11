@@ -22,6 +22,7 @@ public class GlobalSettings {
 		result.setStringGenerator(new RandomAlphanumericStringGenerator(result.getRandom()));
 		result.setStringMaxLength(20);
 
+		result.setAdditionalPropertyFactory(new AdditionalPropertyFactory(result));
 		result.setExampleFactory(new ExampleFactory(result));
 		result.setFloatFactory(new FloatFactory(result));
 		result.setIntegerFactory(new IntegerFactory(result));
@@ -35,6 +36,9 @@ public class GlobalSettings {
 	public synchronized static final GlobalSettings getDefaultSettings() {
 		return DEFAULT_SETTINGS == null ? DEFAULT_SETTINGS = generateDefaults() : DEFAULT_SETTINGS;
 	}
+
+	private AdditionalPropertyFactory propertyFactory;
+	private StackTraceElement[] propertyFactoryUsed = null;
 
 	private BooleanFactory booleanFactory;
 	private StackTraceElement[] booleanFactoryUsed = null;
@@ -62,6 +66,8 @@ public class GlobalSettings {
 
 	private int stringMaxLength;
 	private int stringMinLength = 0;
+	private int propertyNameMaxLength;
+	private int propertyNameMinLength = 0;
 
 	public BooleanFactory getBooleanFactory() {
 		if (booleanFactoryUsed == null) {
@@ -155,8 +161,8 @@ public class GlobalSettings {
 
 	public void setExampleFactory(ExampleFactory exampleFactory) {
 		if (exampleFactoryUsed != null) {
-			String msg = "You're trying to change the boolean factory, that was already used. This may lead to inconsistencies.\n";
-			msg += "First usage of the boolean factory was:\n";
+			String msg = "You're trying to change the example factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the example factory was:\n";
 			msg += Arrays.toString(exampleFactoryUsed);
 			LOGGER.warning(msg);
 		}
@@ -165,8 +171,8 @@ public class GlobalSettings {
 
 	public void setFloatFactory(FloatFactory floatFactory) {
 		if (floatFactoryUsed != null) {
-			String msg = "You're trying to change the boolean factory, that was already used. This may lead to inconsistencies.\n";
-			msg += "First usage of the boolean factory was:\n";
+			String msg = "You're trying to change the float factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the float factory was:\n";
 			msg += Arrays.toString(floatFactoryUsed);
 			LOGGER.warning(msg);
 		}
@@ -175,8 +181,8 @@ public class GlobalSettings {
 
 	public void setIntegerFactory(IntegerFactory integerFactory) {
 		if (integerFactoryUsed != null) {
-			String msg = "You're trying to change the boolean factory, that was already used. This may lead to inconsistencies.\n";
-			msg += "First usage of the boolean factory was:\n";
+			String msg = "You're trying to change the integer factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the integer factory was:\n";
 			msg += Arrays.toString(integerFactoryUsed);
 			LOGGER.warning(msg);
 		}
@@ -189,8 +195,8 @@ public class GlobalSettings {
 
 	public void setObjectFactory(ObjectFactory objectFactory) {
 		if (objectFactoryUsed != null) {
-			String msg = "You're trying to change the boolean factory, that was already used. This may lead to inconsistencies.\n";
-			msg += "First usage of the boolean factory was:\n";
+			String msg = "You're trying to change the object factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the object factory was:\n";
 			msg += Arrays.toString(objectFactoryUsed);
 			LOGGER.warning(msg);
 		}
@@ -203,8 +209,8 @@ public class GlobalSettings {
 
 	public void setStringFactory(StringFactory stringFactory) {
 		if (stringFactoryUsed != null) {
-			String msg = "You're trying to change the boolean factory, that was already used. This may lead to inconsistencies.\n";
-			msg += "First usage of the boolean factory was:\n";
+			String msg = "You're trying to change the string factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the string factory was:\n";
 			msg += Arrays.toString(stringFactoryUsed);
 			LOGGER.warning(msg);
 		}
@@ -221,6 +227,42 @@ public class GlobalSettings {
 
 	public void setStringMinLength(int stringMinLength) {
 		this.stringMinLength = stringMinLength;
+	}
+
+	public int getPropertyNameMaxLength() {
+		return propertyNameMaxLength;
+	}
+
+	public void setPropertyNameMaxLength(int propertyNameMaxLength) {
+		this.propertyNameMaxLength = propertyNameMaxLength;
+	}
+
+	public int getPropertyNameMinLength() {
+		return propertyNameMinLength;
+	}
+
+	public void setPropertyNameMinLength(int propertyNameMinLength) {
+		this.propertyNameMinLength = propertyNameMinLength;
+	}
+
+	public AdditionalPropertyFactory getAdditionalPropertyFactory() {
+		if (propertyFactoryUsed == null) {
+			propertyFactoryUsed = Thread.currentThread().getStackTrace();
+		}
+		if (propertyFactory == null) {
+			propertyFactory = new AdditionalPropertyFactory(this);
+		}
+		return propertyFactory;
+	}
+
+	public void setAdditionalPropertyFactory(AdditionalPropertyFactory propertyFactory) {
+		if (propertyFactoryUsed != null) {
+			String msg = "You're trying to change the property factory, that was already used. This may lead to inconsistencies.\n";
+			msg += "First usage of the property factory was:\n";
+			msg += Arrays.toString(propertyFactoryUsed);
+			LOGGER.warning(msg);
+		}
+		this.propertyFactory = propertyFactory;
 	}
 
 }

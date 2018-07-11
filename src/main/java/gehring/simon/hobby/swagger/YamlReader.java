@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -20,12 +22,16 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import gehring.simon.hobby.swagger.model.v3.OpenApi;
 import gehring.simon.hobby.swagger.testing.SchemeTestResult;
+import gehring.simon.hobby.swagger.testing.results.AbstractTestResult;
+import gehring.simon.hobby.swagger.testing.results.Premise;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class YamlReader.
  */
 public class YamlReader {
+
+	private static final Logger LOGGER = Logger.getLogger(YamlReader.class.getName());
 
 	/**
 	 * The main method.
@@ -53,8 +59,17 @@ public class YamlReader {
 		final YamlReader yaml = new YamlReader(is);
 
 		is.close();
-		final SchemeTestResult sv = new SchemeTestResult(yaml.parsedYaml);
+		final SchemeTestResult sv = new SchemeTestResult(yaml.parsedYaml, new Premise());
 		sv.executeTestsOnAllServers();
+
+		if (sv.hasErrors()) {
+			LOGGER.log(Level.SEVERE, "I encountered errors while testing '" + yamlFile.getAbsolutePath() + "' ("
+					+ yaml.parsedYaml.getInfo().getTitle() + ")");
+			for (AbstractTestResult result : sv) {
+
+				LOGGER.log(Level.SEVERE, result.getDescription());
+			}
+		}
 
 	}
 

@@ -52,6 +52,12 @@ public class ObjectFactory extends Factory {
 				Boolean areAdditionalPropertiesAllowed = additionalProperties.getBoolean();
 				if (areAdditionalPropertiesAllowed) {
 					// Nice, we can fill the remaining needed properties.
+					for (int i = properties.size(); i < min; ++i) {
+						AdditionalProperty nextProperty = settings.getAdditionalPropertyFactory()
+								.produceAdditionalProperty(schema);
+						result.put(nextProperty.getKey(), nextProperty.getValue());
+					}
+
 				} else {
 					// Fuck. At this point this doesn't make a difference, but once we have less
 					// than min properties, we need to inform the user of his error.

@@ -22,6 +22,7 @@ import gehring.simon.hobby.swagger.testing.http.HttpHandler;
 import gehring.simon.hobby.swagger.testing.http.Method;
 import gehring.simon.hobby.swagger.testing.results.AbstractTestResult;
 import gehring.simon.hobby.swagger.testing.results.HttpTestResult;
+import gehring.simon.hobby.swagger.testing.results.Premise;
 import gehring.simon.hobby.swagger.testing.results.TestResultCollection;
 import gehring.simon.hobby.swagger.testing.results.TimeoutTestResult;
 
@@ -32,6 +33,7 @@ import gehring.simon.hobby.swagger.testing.results.TimeoutTestResult;
 public class MethodTestResult extends TestResultCollection {
 
 	private boolean containsErrors = false;
+	private final Premise premise;
 
 	/**
 	 * Instantiates a new method test result.
@@ -45,7 +47,10 @@ public class MethodTestResult extends TestResultCollection {
 	 * @param target
 	 *            the target
 	 */
-	public MethodTestResult(final Method how, String path, final Operation pathOperation, final Server target) {
+	public MethodTestResult(final Method how, String path, final Operation pathOperation, final Server target,
+			Premise premise) {
+
+		this.premise = premise;
 
 		// Add parameters
 		final List<String> queryParameters = new ArrayList<>();
@@ -111,9 +116,9 @@ public class MethodTestResult extends TestResultCollection {
 
 		try {
 			con.connect();
-			result = new HttpTestResult(con);
+			result = new HttpTestResult(con, premise);
 		} catch (IOException e) {
-			result = new TimeoutTestResult(con);
+			result = new TimeoutTestResult(con, premise);
 		}
 		if (result.hasErrors()) {
 			containsErrors = true;
@@ -125,6 +130,11 @@ public class MethodTestResult extends TestResultCollection {
 	@Override
 	public boolean hasErrors() {
 		return containsErrors;
+	}
+
+	@Override
+	public Premise getPremise() {
+		return this.premise;
 	}
 
 }
