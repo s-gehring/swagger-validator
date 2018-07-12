@@ -10,22 +10,19 @@ import java.util.logging.Logger;
 import gehring.simon.hobby.swagger.model.v3.OpenApi;
 import gehring.simon.hobby.swagger.model.v3.PathItem;
 import gehring.simon.hobby.swagger.model.v3.Server;
-import gehring.simon.hobby.swagger.testing.results.Premise;
+import gehring.simon.hobby.swagger.testing.results.TestResult;
 import gehring.simon.hobby.swagger.testing.results.TestResultCollection;
 
 /**
  * The Class SchemeTestResult.
  */
-public class SchemeTestResult extends TestResultCollection {
+public class SchemeTestResult extends TestResultCollection<ServerTestResult> implements TestResult {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(SchemeTestResult.class.getName());
 
 	/** The api. */
 	private OpenApi api = null;
-	private final Premise premise;
-
-	private boolean containsErrors = false;
 
 	/**
 	 * Instantiates a new scheme test result.
@@ -33,11 +30,10 @@ public class SchemeTestResult extends TestResultCollection {
 	 * @param api
 	 *            the api
 	 */
-	public SchemeTestResult(final OpenApi api, Premise premise) {
+	public SchemeTestResult(final OpenApi api) {
 		super();
 		this.api = api;
 
-		this.premise = premise;
 	}
 
 	/**
@@ -66,21 +62,18 @@ public class SchemeTestResult extends TestResultCollection {
 	 */
 	public boolean executeTestsOnOneServer(final Server server) {
 		final Map<String, PathItem> paths = api.getPaths();
-		final ServerTestResult testResult = new ServerTestResult(server, paths, premise);
+		final ServerTestResult testResult = new ServerTestResult(server, paths);
 		this.add(testResult);
-		if (testResult.hasErrors()) {
-			containsErrors = true;
-		}
 		return true;
 	}
 
 	@Override
-	public boolean hasErrors() {
-		return containsErrors;
+	public boolean isErroreous() {
+		return hasErrors();
 	}
 
 	@Override
-	public Premise getPremise() {
+	public String toLongString() {
 		// TODO Auto-generated method stub
 		return null;
 	}

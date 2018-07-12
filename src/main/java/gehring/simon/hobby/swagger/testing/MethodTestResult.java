@@ -20,20 +20,14 @@ import gehring.simon.hobby.swagger.model.v3.Server;
 import gehring.simon.hobby.swagger.testing.factories.ExampleFactory;
 import gehring.simon.hobby.swagger.testing.http.HttpHandler;
 import gehring.simon.hobby.swagger.testing.http.Method;
-import gehring.simon.hobby.swagger.testing.results.AbstractTestResult;
-import gehring.simon.hobby.swagger.testing.results.HttpTestResult;
-import gehring.simon.hobby.swagger.testing.results.Premise;
+import gehring.simon.hobby.swagger.testing.results.ServerResponseTestResult;
+import gehring.simon.hobby.swagger.testing.results.TestResult;
 import gehring.simon.hobby.swagger.testing.results.TestResultCollection;
-import gehring.simon.hobby.swagger.testing.results.TimeoutTestResult;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MethodTestResult.
  */
-public class MethodTestResult extends TestResultCollection {
-
-	private boolean containsErrors = false;
-	private final Premise premise;
+public class MethodTestResult extends TestResultCollection<ServerResponseTestResult> implements TestResult {
 
 	/**
 	 * Instantiates a new method test result.
@@ -47,10 +41,7 @@ public class MethodTestResult extends TestResultCollection {
 	 * @param target
 	 *            the target
 	 */
-	public MethodTestResult(final Method how, String path, final Operation pathOperation, final Server target,
-			Premise premise) {
-
-		this.premise = premise;
+	public MethodTestResult(final Method how, String path, final Operation pathOperation, final Server target) {
 
 		// Add parameters
 		final List<String> queryParameters = new ArrayList<>();
@@ -112,29 +103,28 @@ public class MethodTestResult extends TestResultCollection {
 	 *            the con
 	 */
 	private void executeConnection(final HttpURLConnection con) {
-		AbstractTestResult result;
+		ServerResponseTestResult result = new ServerResponseTestResult();
 
 		try {
 			con.connect();
-			result = new HttpTestResult(con, premise);
+			// result = new HttpTestResultOld(con, premise);
 		} catch (IOException e) {
-			result = new TimeoutTestResult(con, premise);
-		}
-		if (result.hasErrors()) {
-			containsErrors = true;
+			// result = new TimeoutTestResult(con, premise);
 		}
 
 		this.add(result);
 	}
 
 	@Override
-	public boolean hasErrors() {
-		return containsErrors;
+	public boolean isErroreous() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public Premise getPremise() {
-		return this.premise;
+	public String toLongString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

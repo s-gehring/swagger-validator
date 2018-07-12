@@ -22,8 +22,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import gehring.simon.hobby.swagger.model.v3.OpenApi;
 import gehring.simon.hobby.swagger.testing.SchemeTestResult;
-import gehring.simon.hobby.swagger.testing.results.AbstractTestResult;
-import gehring.simon.hobby.swagger.testing.results.Premise;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,17 +57,15 @@ public class YamlReader {
 		final YamlReader yaml = new YamlReader(is);
 
 		is.close();
-		final SchemeTestResult sv = new SchemeTestResult(yaml.parsedYaml, new Premise());
-		sv.executeTestsOnAllServers();
+		final SchemeTestResult schemeResult = new SchemeTestResult(yaml.parsedYaml);
+		schemeResult.executeTestsOnAllServers();
 
-		if (sv.hasErrors()) {
+		if (schemeResult.hasErrors()) {
 			LOGGER.log(Level.SEVERE, "I encountered errors while testing '" + yamlFile.getAbsolutePath() + "' ("
 					+ yaml.parsedYaml.getInfo().getTitle() + ")");
-			for (AbstractTestResult result : sv) {
 
-				LOGGER.log(Level.SEVERE, result.getDescription());
-			}
 		}
+		LOGGER.log(Level.SEVERE, "\n" + schemeResult.toString());
 
 	}
 
