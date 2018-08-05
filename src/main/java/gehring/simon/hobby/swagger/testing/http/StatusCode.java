@@ -1,15 +1,16 @@
 package gehring.simon.hobby.swagger.testing.http;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatusCode {
+public class StatusCode implements Serializable {
 
 	private final Integer code;
 	private final String title;
 	private final String msg;
 
-	private transient static Map<Integer, StatusCode> codes = null;
+	private static transient Map<Integer, StatusCode> codes = null;
 
 	private static void initialize() {
 		codes.put(100, new StatusCode(100, "Continue",
@@ -136,77 +137,15 @@ public class StatusCode {
 				"Further extensions to the request are required for the server to fulfil it."));
 		codes.put(511, new StatusCode(511, "Network Authentication Required (RFC 6585)",
 				"The client needs to authenticate to gain network access. Intended for use by intercepting proxies used to control access to the network (e.g., \"captive portals\" used to require agreement to Terms of Service before granting full Internet access via a Wi-Fi hotspot)."));
-		/*
-		 * codes.put(103, new StatusCode(103, "Checkpoint",
-		 * "Used in the resumable requests proposal to resume aborted PUT or POST requests."
-		 * )); codes.put(218, new StatusCode(218, "This is fine (Apache Web Server)",
-		 * "Used as a catch-all error condition for allowing response bodies to flow through Apache when ProxyErrorOverride is enabled. When ProxyErrorOverride is enabled in Apache, response bodies that contain a status code of 4xx or 5xx are automatically discarded by Apache in favor of a generic response or a custom response specified by the ErrorDocument directive."
-		 * )); codes.put(420, new StatusCode(420, "Method Failure (Spring Framework)",
-		 * "A deprecated response used by the Spring Framework when a method has failed."
-		 * )); codes.put(420, new StatusCode(420, "Enhance Your Calm (Twitter)",
-		 * "Returned by version 1 of the Twitter Search and Trends API when the client is being rate limited; versions 1.1 and later use the 429 Too Many Requests response code instead."
-		 * )); codes.put(450, new StatusCode(450,
-		 * "Blocked by Windows Parental Controls (Microsoft)",
-		 * "The Microsoft extension code indicated when Windows Parental Controls are turned on and are blocking access to the requested webpage."
-		 * )); codes.put(498, new StatusCode(498, "Invalid Token (Esri)",
-		 * "Returned by ArcGIS for Server. Code 498 indicates an expired or otherwise invalid token."
-		 * )); codes.put(499, new StatusCode(499, "Token Required (Esri)",
-		 * "Returned by ArcGIS for Server. Code 499 indicates that a token is required but was not submitted."
-		 * )); codes.put(509, new StatusCode(509,
-		 * "Bandwidth Limit Exceeded (Apache Web Server/cPanel)",
-		 * "The server has exceeded the bandwidth specified by the server administrator; this is often used by shared hosting providers to limit the bandwidth of customers."
-		 * )); codes.put(530, new StatusCode(530, "Site is frozen",
-		 * "Used by the Pantheon web platform to indicate a site that has been frozen due to inactivity."
-		 * )); codes.put(598, new StatusCode(598,
-		 * "(Informal convention) Network read timeout error",
-		 * "Used by some HTTP proxies to signal a network read timeout behind the proxy to a client in front of the proxy."
-		 * )); codes.put(440, new StatusCode(440, "Login Time-out",
-		 * "The client's session has expired and must log in again.")); codes.put(449,
-		 * new StatusCode(449, "Retry With",
-		 * "The server cannot honour the request because the user has not provided the required information."
-		 * )); codes.put(451, new StatusCode(451, "Redirect",
-		 * "Used in Exchange ActiveSync when either a more efficient server is available or the server cannot access the users' mailbox. The client is expected to re-run the HTTP AutoDiscover operation to find a more appropriate server."
-		 * )); codes.put(444, new StatusCode(444, "No Response",
-		 * "Used internally to instruct the server to return no information to the client and close the connection immediately."
-		 * )); codes.put(494, new StatusCode(494, "Request header too large",
-		 * "Client sent too large request or too long header line.")); codes.put(495,
-		 * new StatusCode(495, "SSL Certificate Error",
-		 * "An expansion of the 400 Bad Request response code, used when the client has provided an invalid client certificate."
-		 * )); codes.put(496, new StatusCode(496, "SSL Certificate Required",
-		 * "An expansion of the 400 Bad Request response code, used when a client certificate is required but not provided."
-		 * )); codes.put(497, new StatusCode(497, "HTTP Request Sent to HTTPS Port",
-		 * "An expansion of the 400 Bad Request response code, used when the client has made a HTTP request to a port listening for HTTPS requests."
-		 * )); codes.put(499, new StatusCode(499, "Client Closed Request",
-		 * "Used when the client has closed the request before the server could send a response."
-		 * )); codes.put(520, new StatusCode(520, "Unknown Error",
-		 * "The 520 error is used as a \"catch-all response for when the origin server returns something unexpected\", listing connection resets, large headers, and empty or invalid responses as common triggers."
-		 * )); codes.put(521, new StatusCode(521, "Web Server Is Down",
-		 * "The origin server has refused the connection from Cloudflare."));
-		 * codes.put(522, new StatusCode(522, "Connection Timed Out",
-		 * "Cloudflare could not negotiate a TCP handshake with the origin server."));
-		 * codes.put(523, new StatusCode(523, "Origin Is Unreachable",
-		 * "Cloudflare could not reach the origin server; for example, if the DNS records for the origin server are incorrect."
-		 * )); codes.put(524, new StatusCode(524, "A Timeout Occurred",
-		 * "Cloudflare was able to complete a TCP connection to the origin server, but did not receive a timely HTTP response."
-		 * )); codes.put(525, new StatusCode(525, "SSL Handshake Failed",
-		 * "Cloudflare could not negotiate a SSL/TLS handshake with the origin server.")
-		 * ); codes.put(526, new StatusCode(526, "Invalid SSL Certificate",
-		 * "Cloudflare could not validate the SSL/TLS certificate that the origin server presented."
-		 * )); codes.put(527, new StatusCode(527, "Railgun Error",
-		 * "Error 527 indicates that the request timed out or failed after the WAN connection had been established."
-		 * )); codes.put(530, new StatusCode(530, "Origin DNS Error",
-		 * "Error 530 indicates that the requested host name could not be resolved on the Cloudflare network to an origin server."
-		 * ));
-		 */
+
 	}
 
 	private static synchronized void initializeIfNecessary() {
 		if (codes == null) {
-			if (codes == null) {
-				codes = new HashMap<>();
-				initialize();
-			}
+			codes = new HashMap<>();
+			initialize();
 		}
+
 	}
 
 	public static StatusCode getByCode(Integer code) {
