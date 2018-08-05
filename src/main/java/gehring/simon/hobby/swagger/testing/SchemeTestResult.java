@@ -22,7 +22,7 @@ public class SchemeTestResult extends TestResultCollection<ServerTestResult> imp
 	private static final Logger LOGGER = Logger.getLogger(SchemeTestResult.class.getName());
 
 	/** The api. */
-	private OpenApi api = null;
+	private transient OpenApi api = null;
 
 	/**
 	 * Instantiates a new scheme test result.

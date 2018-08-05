@@ -7,9 +7,10 @@ import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
 public class SchemaOrBoolean extends SwaggerObject {
 
-	public static enum Type {
-		Boolean, Schema
+	public enum Type {
+		BOOLEAN, SCHEMA
 	}
+
 	private final Boolean underlyingBoolean;
 
 	private final Schema underlyingSchema;
@@ -18,11 +19,11 @@ public class SchemaOrBoolean extends SwaggerObject {
 
 	public SchemaOrBoolean(String content) {
 		if (content.equalsIgnoreCase("false") || content.equalsIgnoreCase("true")) {
-			underlyingType = Type.Boolean;
+			underlyingType = Type.BOOLEAN;
 			underlyingBoolean = Boolean.parseBoolean(content);
 			underlyingSchema = null;
 		} else {
-			underlyingType = Type.Schema;
+			underlyingType = Type.SCHEMA;
 			underlyingBoolean = null;
 			try {
 				underlyingSchema = new Schema(content);
@@ -33,14 +34,14 @@ public class SchemaOrBoolean extends SwaggerObject {
 	}
 
 	public Boolean getBoolean() {
-		if (underlyingType == Type.Schema) {
+		if (underlyingType == Type.SCHEMA) {
 			throw new ClassCastException("Tried to get boolean, but is actually a schema.");
 		}
 		return underlyingBoolean;
 	}
 
 	public Schema getSchema() {
-		if (underlyingType == Type.Boolean) {
+		if (underlyingType == Type.BOOLEAN) {
 			throw new ClassCastException("Tried to get schema, but is actually a boolean.");
 		}
 		return underlyingSchema;
@@ -51,7 +52,7 @@ public class SchemaOrBoolean extends SwaggerObject {
 	}
 
 	public Class<?> getTypeClass() {
-		if (underlyingType == Type.Boolean)
+		if (underlyingType == Type.BOOLEAN)
 			return Boolean.class;
 		return Schema.class;
 	}

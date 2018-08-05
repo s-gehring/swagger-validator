@@ -120,7 +120,7 @@ public class Schema extends SwaggerObject {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public Schema(final String reference) throws JsonProcessingException, MalformedURLException, IOException {
+	public Schema(final String reference) throws IOException {
 		super(reference);
 	}
 
