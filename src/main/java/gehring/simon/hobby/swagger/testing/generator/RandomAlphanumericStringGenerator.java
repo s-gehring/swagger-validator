@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomAlphanumericStringGenerator implements StringGenerator {
 
-	private static final String alphanumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	private static final String ALPHANUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	private Random random;
 
 	public RandomAlphanumericStringGenerator(long seed) {
@@ -20,7 +20,7 @@ public class RandomAlphanumericStringGenerator implements StringGenerator {
 		int length = random.nextInt(maxLength - minLength) + minLength;
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < length; ++i) {
-			result.append(alphanumericCharacters.charAt(random.nextInt(alphanumericCharacters.length())));
+			result.append(ALPHANUMERIC_CHARACTERS.charAt(random.nextInt(ALPHANUMERIC_CHARACTERS.length())));
 		}
 		return result.toString();
 	}
