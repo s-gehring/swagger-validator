@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import gehring.simon.hobby.swagger.model.v3.Schema;
 
-public class FloatFactory extends Factory {
+public class FloatFactory implements Factory {
 
 	private static final Logger LOGGER = Logger.getLogger(FloatFactory.class.toString());
 	private final GlobalSettings settings;
@@ -13,24 +13,56 @@ public class FloatFactory extends Factory {
 		this.settings = settings;
 	}
 
+	private Float getMinFloat(Schema schema) {
+		Float min = Float.MIN_VALUE;
+		if (schema.getMinimum() != null)
+			min = schema.getMinimum().floatValue();
+
+		if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum())
+			min += Math.ulp(min);
+		return min;
+	}
+
+	private Float getMaxFloat(Schema schema) {
+		Float max = Float.MAX_VALUE;
+		if (schema.getMaximum() != null)
+			max = schema.getMaximum().floatValue();
+		if (schema.getExclusiveMaximum() != null && !schema.getExclusiveMaximum())
+			max += Math.ulp(max);
+		return max;
+	}
+
+	private Double getMinDouble(Schema schema) {
+		double min = Double.MIN_VALUE;
+		if (schema.getMinimum() != null)
+			min = schema.getMinimum();
+
+		if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum())
+			min += Math.ulp(min);
+		return min;
+	}
+
+	private Double getMaxDouble(Schema schema) {
+		double max = Double.MAX_VALUE;
+		if (schema.getMaximum() != null)
+			max = schema.getMaximum();
+		if (schema.getExclusiveMaximum() != null && !schema.getExclusiveMaximum())
+			max += Math.ulp(max);
+		return max;
+	}
+
 	protected Double buildCustomExampleDoubleBySchema(Schema schema) {
 		if (schema.getMultipleOf() != null) {
-			double min = Double.MIN_VALUE, max = Double.MAX_VALUE;
-			if (schema.getMinimum() != null)
-				min = schema.getMinimum();
-			if (schema.getMaximum() != null)
-				max = schema.getMaximum();
-			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false)
-				max += Math.ulp(max);
-			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true)
-				min += Math.ulp(min);
+
+			Double min = getMinDouble(schema);
+			Double max = getMaxDouble(schema);
 
 			long resultFactor;
-			long minFactor = getMinFactor(schema, min, max);
-			long maxFactor = getMaxFactor(schema, min, max);
+			long minFactor = getMinFactor(schema, min);
+			long maxFactor = getMaxFactor(schema, max);
 			if (minFactor == maxFactor) {
 				LOGGER.warning(
-						"The combination of min=" + min + ", max=" + max + ", multipleOf=" + schema.getMultipleOf()
+						"The combination of min={}" + min + ", max=" + max + ", multipleOf=" + schema.getMultipleOf()
 								+ " leaves only one possible answer=" + (minFactor * schema.getMultipleOf()) + ".");
 				resultFactor = minFactor;
 			} else {
@@ -47,18 +79,11 @@ public class FloatFactory extends Factory {
 
 	protected Float buildCustomExampleFloatBySchema(Schema schema) {
 		if (schema.getMultipleOf() != null) {
-			float min = Float.MIN_VALUE, max = Float.MAX_VALUE;
-			if (schema.getMinimum() != null)
-				min = schema.getMinimum().floatValue();
-			if (schema.getMaximum() != null)
-				max = schema.getMaximum().floatValue();
-			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false)
-				max += Math.ulp(max);
-			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true)
-				min += Math.ulp(min);
+			float min = getMinFloat(schema);
+			float max = getMaxFloat(schema);
 			long resultFactor;
-			long minFactor = getMinFactor(schema, min, max);
-			long maxFactor = getMaxFactor(schema, min, max);
+			long minFactor = getMinFactor(schema, min);
+			long maxFactor = getMaxFactor(schema, max);
 			if (minFactor == maxFactor) {
 				LOGGER.warning(
 						"The combination of min=" + min + ", max=" + max + ", multipleOf=" + schema.getMultipleOf()
@@ -77,7 +102,7 @@ public class FloatFactory extends Factory {
 		return settings.getNumberGenerator().nextFloat(min, max);
 	}
 
-	private long getMaxFactor(Schema schema, double min, double max) {
+	private long getMaxFactor(Schema schema, double max) {
 		Double maxFactorFraction = max / schema.getMultipleOf();
 		maxFactorFraction = Math.floor(maxFactorFraction);
 		return maxFactorFraction.longValue();
@@ -89,9 +114,14 @@ public class FloatFactory extends Factory {
 	 * minimum factor is (i. e. the first integer(!) X for which .multipleOf() * X >
 	 * getMinimum() (or >= for inclusive minimums)).
 	 */
-	private long getMinFactor(Schema schema, double min, double max) {
+	private long getMinFactor(Schema schema, double min) {
 		Double minFactorFraction = min / schema.getMultipleOf();
 		minFactorFraction = Math.ceil(minFactorFraction);
 		return minFactorFraction.longValue();
+	}
+
+	@Override
+	public String getFactoryDescription() {
+		return "A factory to create random floating point numbers.";
 	}
 }

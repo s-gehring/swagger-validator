@@ -1,5 +1,6 @@
 package gehring.simon.hobby.swagger.testing.factories;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -9,9 +10,9 @@ import gehring.simon.hobby.swagger.testing.generator.RandomAlphanumericStringGen
 import gehring.simon.hobby.swagger.testing.generator.RandomNumberGenerator;
 import gehring.simon.hobby.swagger.testing.generator.StringGenerator;
 
-public class GlobalSettings {
+public class GlobalSettings implements Serializable {
 
-	private static GlobalSettings DEFAULT_SETTINGS;
+	private static GlobalSettings defaultSettings;
 
 	protected static final Logger LOGGER = Logger.getLogger(GlobalSettings.class.toString());
 
@@ -33,8 +34,8 @@ public class GlobalSettings {
 		return result;
 	}
 
-	public synchronized static final GlobalSettings getDefaultSettings() {
-		return DEFAULT_SETTINGS == null ? DEFAULT_SETTINGS = generateDefaults() : DEFAULT_SETTINGS;
+	public static final synchronized GlobalSettings getDefaultSettings() {
+		return defaultSettings == null ? defaultSettings = generateDefaults() : defaultSettings;
 	}
 
 	private AdditionalPropertyFactory propertyFactory;

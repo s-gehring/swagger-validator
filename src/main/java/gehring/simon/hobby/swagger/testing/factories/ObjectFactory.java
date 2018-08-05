@@ -7,7 +7,7 @@ import gehring.simon.hobby.swagger.model.v3.Schema;
 import gehring.simon.hobby.swagger.model.v3.SchemaOrBoolean;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
-public class ObjectFactory extends Factory {
+public class ObjectFactory implements Factory {
 	private static final Logger LOGGER = Logger.getLogger(ObjectFactory.class.toString());
 	private final GlobalSettings settings;
 
@@ -48,7 +48,7 @@ public class ObjectFactory extends Factory {
 
 		SchemaOrBoolean additionalProperties = schema.getAdditionalProperties();
 		if (additionalProperties != null) {
-			if (additionalProperties.getType() == SchemaOrBoolean.Type.Boolean) {
+			if (additionalProperties.getType() == SchemaOrBoolean.Type.BOOLEAN) {
 				Boolean areAdditionalPropertiesAllowed = additionalProperties.getBoolean();
 				if (areAdditionalPropertiesAllowed) {
 					// Nice, we can fill the remaining needed properties.
@@ -68,5 +68,10 @@ public class ObjectFactory extends Factory {
 		}
 
 		return result;
+	}
+
+	@Override
+	public String getFactoryDescription() {
+		return "A factory creating example JSON objects. This will most likely recursively call itself or other factories.";
 	}
 }

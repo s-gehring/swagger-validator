@@ -15,6 +15,7 @@ public class AdditionalPropertyFactory {
 	}
 
 	protected AdditionalProperty produceAdditionalProperty(Schema parentSchema) {
+
 		// @formatter:off
 		return new AdditionalProperty(
 				settings.getStringGenerator().nextString(settings.getPropertyNameMinLength(), settings.getPropertyNameMinLength()), 

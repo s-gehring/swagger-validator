@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import gehring.simon.hobby.swagger.model.v3.Schema;
 import gehring.simon.hobby.swagger.testing.MalformedSwaggerYamlException;
 
-public class IntegerFactory extends Factory {
+public class IntegerFactory implements Factory {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(IntegerFactory.class.toString());
 	private final GlobalSettings settings;
@@ -15,18 +15,19 @@ public class IntegerFactory extends Factory {
 	}
 
 	protected Integer buildCustomExampleIntegerBySchema(Schema schema) {
-		int min = Integer.MIN_VALUE, max = Integer.MAX_VALUE;
+		int min = Integer.MIN_VALUE;
+		int max = Integer.MAX_VALUE;
 		if (schema.getMaximum() != null) {
 			Double maxFractional = Math.floor(schema.getMaximum());
 			max = maxFractional.intValue();
-			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false) {
+			if (schema.getExclusiveMaximum() != null && !schema.getExclusiveMaximum()) {
 				max++;
 			}
 		}
 		if (schema.getMinimum() != null) {
 			Double minFractional = Math.ceil(schema.getMinimum());
 			min = minFractional.intValue();
-			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true) {
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum()) {
 				min++;
 			}
 		}
@@ -39,18 +40,19 @@ public class IntegerFactory extends Factory {
 	}
 
 	protected Long buildCustomExampleLongBySchema(Schema schema) {
-		long min = Long.MIN_VALUE, max = Long.MAX_VALUE;
+		long min = Long.MIN_VALUE;
+		long max = Long.MAX_VALUE;
 		if (schema.getMaximum() != null) {
 			Double maxFractional = Math.floor(schema.getMaximum());
 			max = maxFractional.longValue();
-			if (schema.getExclusiveMaximum() != null && schema.getExclusiveMaximum() == false) {
+			if (schema.getExclusiveMaximum() != null && !schema.getExclusiveMaximum()) {
 				max++;
 			}
 		}
 		if (schema.getMinimum() != null) {
 			Double minFractional = Math.ceil(schema.getMinimum());
 			min = minFractional.intValue();
-			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum() == true) {
+			if (schema.getExclusiveMinimum() != null && schema.getExclusiveMinimum()) {
 				min++;
 			}
 		}
@@ -60,6 +62,11 @@ public class IntegerFactory extends Factory {
 		}
 
 		return settings.getNumberGenerator().nextLong(min, max);
+	}
+
+	@Override
+	public String getFactoryDescription() {
+		return "A factory to create random integer numbers.";
 	}
 
 }
