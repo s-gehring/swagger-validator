@@ -9,8 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -29,7 +30,7 @@ import gehring.simon.hobby.swagger.testing.SchemeTestResult;
  */
 public class YamlReader {
 
-	private static final Logger LOGGER = Logger.getLogger(YamlReader.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(YamlReader.class);
 
 	/**
 	 * The main method.
@@ -61,11 +62,11 @@ public class YamlReader {
 		schemeResult.executeTestsOnAllServers();
 
 		if (schemeResult.hasErrors()) {
-			LOGGER.log(Level.SEVERE, "I encountered errors while testing '" + yamlFile.getAbsolutePath() + "' ("
+			LOGGER.error("I encountered errors while testing '" + yamlFile.getAbsolutePath() + "' ("
 					+ yaml.parsedYaml.getInfo().getTitle() + ")");
 
 		}
-		LOGGER.log(Level.SEVERE, "\n" + schemeResult.toString());
+		LOGGER.error("\n" + schemeResult.toString());
 
 	}
 
