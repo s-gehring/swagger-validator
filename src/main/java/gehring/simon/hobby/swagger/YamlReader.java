@@ -18,11 +18,10 @@ import gehring.simon.hobby.swagger.testing.PathTestResult;
 import gehring.simon.hobby.swagger.testing.SchemeTestResult;
 import gehring.simon.hobby.swagger.testing.ServerTestResult;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collection;
 
 import org.apache.logging.log4j.LogManager;
@@ -55,9 +54,10 @@ public class YamlReader {
         // System.out.println(SwaggerObjectFactory.createExample(OpenApi.class));
         // System.exit(0);
 
-        final File yamlFile = new File("C:\\Users\\Simon\\Desktop\\someYaml.yaml");
+        final URL yamlFile = new URL(
+                "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml");
 
-        final InputStream is = new FileInputStream(yamlFile);
+        final InputStream is = yamlFile.openStream();
 
         final YamlReader yaml = new YamlReader(is);
 
@@ -99,7 +99,7 @@ public class YamlReader {
         }
 
         if (schemeTestResults.hasErrors()) {
-            LOGGER.error("I encountered errors while testing '" + yamlFile.getAbsolutePath() + "' ("
+            LOGGER.error("I encountered errors while testing '" + yamlFile.toString() + "' ("
                     + yaml.parsedYaml.getInfo().getTitle() + ")");
 
         }
