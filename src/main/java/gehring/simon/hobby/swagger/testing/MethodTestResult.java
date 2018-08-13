@@ -42,10 +42,10 @@ public class MethodTestResult implements TestResult {
     }
 
     /**
-     * Execute connection.
+     * Executes connection and stores the result as a {@link AtomicTestResult}.
      *
      * @param httpConnection
-     *            the con
+     *            The connection to execute.
      */
     private void executeConnection(final HttpURLConnection httpConnection) {
         try {
@@ -61,13 +61,13 @@ public class MethodTestResult implements TestResult {
      * Instantiates a new method test result.
      *
      * @param how
-     *            the how
+     *            The HTTP {@link Method} to use.
      * @param path
-     *            the path
+     *            The path to test.
      * @param pathOperation
-     *            the path operation
+     *            The operation to test on the path.
      * @param target
-     *            the target
+     *            The target {@link Server}.
      */
     public MethodTestResult(final Method how, String path, final Operation pathOperation,
             final Server target) {
