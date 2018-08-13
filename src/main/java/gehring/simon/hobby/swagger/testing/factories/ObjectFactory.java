@@ -11,7 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 public class ObjectFactory implements Factory {
 
-    private static final Logger  LOGGER = LogManager.getLogger(ObjectFactory.class.toString());
+    private static final long    serialVersionUID = -2723536975186903895L;
+    private static final Logger  LOGGER           = LogManager
+            .getLogger(ObjectFactory.class.toString());
     private final GlobalSettings settings;
 
     protected ObjectFactory(final GlobalSettings settings) {

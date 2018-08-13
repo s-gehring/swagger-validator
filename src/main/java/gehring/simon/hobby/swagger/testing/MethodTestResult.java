@@ -30,7 +30,8 @@ import java.util.Map.Entry;
  */
 public class MethodTestResult implements TestResult {
 
-    private AtomicTestResult result;
+    private static final long serialVersionUID = 7877212444555929400L;
+    private AtomicTestResult  result;
 
     public AtomicTestResult getResult() {
         if (result == null) {

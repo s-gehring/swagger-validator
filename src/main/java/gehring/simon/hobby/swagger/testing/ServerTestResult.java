@@ -16,6 +16,8 @@ import java.util.Map.Entry;
  */
 public class ServerTestResult extends TestResultCollection<PathTestResult> implements TestResult {
 
+    private static final long serialVersionUID = 1494858434386678691L;
+
     /**
      * Instantiates a new server test result.
      *

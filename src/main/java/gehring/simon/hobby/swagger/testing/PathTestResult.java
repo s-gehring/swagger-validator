@@ -17,8 +17,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class PathTestResult extends TestResultCollection<MethodTestResult> implements TestResult {
 
+    private static final long   serialVersionUID = 732412230675395191L;
     /** The Constant LOGGER. */
-    private static final Logger LOGGER = LogManager.getLogger(PathTestResult.class.getName());
+    private static final Logger LOGGER           = LogManager
+            .getLogger(PathTestResult.class.getName());
 
     /**
      * Instantiates a new path test result.

@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 public class GlobalSettings implements Serializable {
 
+    private static final long serialVersionUID = -5457271249256993408L;
+
     private static GlobalSettings defaultSettings;
 
     protected static final Logger LOGGER = LogManager.getLogger(GlobalSettings.class.toString());

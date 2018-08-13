@@ -12,11 +12,12 @@ import org.apache.logging.log4j.Logger;
 
 public class HttpTestResult implements AtomicTestResult {
 
+    private static final long   serialVersionUID = -1502759378462075956L;
     private boolean             error;
     private int                 httpCode;
     private HttpURLConnection   connection;
     @SuppressWarnings("unused")
-    private static final Logger LOGGER = LogManager.getLogger(HttpTestResult.class);
+    private static final Logger LOGGER           = LogManager.getLogger(HttpTestResult.class);
     private String              content;
 
     private boolean isErroreousHttpResponseCode(final int httpCode) {

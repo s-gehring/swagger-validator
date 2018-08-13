@@ -20,7 +20,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class ExampleFactory implements Factory {
 
-    private static final Logger LOGGER = LogManager.getLogger(ExampleFactory.class.toString());
+    private static final long   serialVersionUID = -145772584605093390L;
+    private static final Logger LOGGER           = LogManager
+            .getLogger(ExampleFactory.class.toString());
 
     private enum Type {
         INT64("int64"), INT32("int32"), INTEGER("integer"), INT("int"), STRING("string"), LONG(

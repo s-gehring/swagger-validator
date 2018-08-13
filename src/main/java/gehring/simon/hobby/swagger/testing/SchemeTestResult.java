@@ -19,6 +19,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class SchemeTestResult extends TestResultCollection<ServerTestResult> implements TestResult {
 
+    private static final long serialVersionUID = 4122954230909365121L;
+
     /** The Constant LOGGER. */
     private static final Logger LOGGER = LogManager.getLogger(SchemeTestResult.class.getName());
 

@@ -9,6 +9,8 @@ import java.util.List;
 
 public class TestResultCollection<T extends TestResult> extends ArrayList<T> implements TestResult {
 
+    private static final long serialVersionUID = -3491181583197914705L;
+
     public Collection<T> getCauses() {
         if (this.isEmpty()) {
             throw new IllegalStateException(

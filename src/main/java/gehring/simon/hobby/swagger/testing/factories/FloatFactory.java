@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 public class FloatFactory implements Factory {
 
-    private static final Logger  LOGGER = LogManager.getLogger(FloatFactory.class.toString());
+    private static final long    serialVersionUID = 7318313207125503767L;
+    private static final Logger  LOGGER           = LogManager
+            .getLogger(FloatFactory.class.toString());
     private final GlobalSettings settings;
 
     protected FloatFactory(final GlobalSettings settings) {

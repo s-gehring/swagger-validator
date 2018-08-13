@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 
 public class TimeoutTestResult extends RuntimeException implements AtomicTestResult {
 
+    private static final long       serialVersionUID = 4803365562612510337L;
     private final HttpURLConnection connection;
 
     public TimeoutTestResult(final Throwable cause, final HttpURLConnection underlyingConnection) {
